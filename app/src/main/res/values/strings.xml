@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Mobile Project</string>
+    <string name="second_name">Kyle Doan</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_temporary">TemporaryActivity</string>
+    <string name="text">Text</string>
+    <string name="img">Image</string>
+    <string name="web">Web</string>
+    <string name="toast">Toast</string>
+    <string name="dialog">Dialog</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="name">Kyle Doan</string>
+    <string name="status">Senior Student who will graduate in Spring 2016</string>
+    <string name="favorite_class">My favorite classes: TCSS 305, TCSS 491, TCSS 360</string>
+    <string name="profile_pic">Profile Picture</string>
+    <string name="toast_mes">Testing testing .... Toast</string>
+    <string name="dialog_content">Hey, wassup?</string>
+    <string name="dialog_cancel">who are you?</string>
+    <string name="dialog_accept">sup, how are you doing?</string>
 </resources>

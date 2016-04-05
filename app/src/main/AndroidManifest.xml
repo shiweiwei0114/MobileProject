@@ -18,6 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SecondMemberActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/second_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".InfoActivity"
+            android:parentActivityName=".SecondMemberActivity" />
+        <activity
+            android:name=".ImgActivity"
+            android:parentActivityName=".SecondMemberActivity" />
     </application>
 
 </manifest>
