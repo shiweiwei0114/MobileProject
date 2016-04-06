@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchActivity() {
+    public void switchActivity(View view) {
         Intent intent = new Intent(this, SecondMemberActivity.class);
         startActivity(intent);
     }
