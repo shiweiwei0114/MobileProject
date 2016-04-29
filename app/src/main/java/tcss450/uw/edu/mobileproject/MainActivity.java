@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Comments for git lab use. 
+    //Comments for git lab use.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
