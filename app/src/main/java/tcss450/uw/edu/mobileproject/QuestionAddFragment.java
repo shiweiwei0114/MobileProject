@@ -8,39 +8,41 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import tcss450.uw.edu.mobileproject.model.Question;
+import java.net.URLEncoder;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link QuestionPostFragment.OnFragmentInteractionListener} interface
+ * {@link QuestionAddListener} interface
  * to handle interaction events.
- * Use the {@link QuestionPostFragment#newInstance} factory method to
+ * Use the {@link QuestionAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QuestionPostFragment extends Fragment {
+public class QuestionAddFragment extends Fragment {
+
+    // TODO : implement PHP for addQuestion
+    private final static String QUESTION_ADD_URL =
+            "http://cssgate.insttech.washington.edu/~_450btm7/addQuestion.php?";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static String QUEST_SELECTED = "";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private TextView mQuestDetailTextView;
-    private TextView mQuestUserPostTextView;
-    private TextView mQuestDatePostTextView;
-    private TextView mQuestCompanyTextView;
+    private QuestionAddListener mListener;
+    private EditText mQuestDetailEditText;
+    private EditText mQuestCompanyEditText;
+    private EditText mQuestTags;
 
-    private OnFragmentInteractionListener mListener;
-
-    public QuestionPostFragment() {
+    public QuestionAddFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +52,11 @@ public class QuestionPostFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment QuestionPostFragment.
+     * @return A new instance of fragment QuestionAddFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static QuestionPostFragment newInstance(String param1, String param2) {
-        QuestionPostFragment fragment = new QuestionPostFragment();
+    public static QuestionAddFragment newInstance(String param1, String param2) {
+        QuestionAddFragment fragment = new QuestionAddFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,26 +67,9 @@ public class QuestionPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
-        Bundle args = getArguments();
-        if (args != null) {
-            mParam1 = args.getString(ARG_PARAM1);
-            mParam2 = args.getString(ARG_PARAM2);
-            // Set article based on argument passed in
-            updateView((Question) args.getSerializable(QUEST_SELECTED));
-        }
-    }
-
-    public void updateView(Question quest) {
-        if (quest != null) {
-            mQuestDetailTextView.setText(quest.getQuestDetail());
-            mQuestUserPostTextView.setText(quest.getUser());
-            mQuestDatePostTextView.setText(quest.getQuestDatePost());
-            mQuestCompanyTextView.setText(quest.getCompany());
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -92,31 +77,58 @@ public class QuestionPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_question_post, container, false);
-        mQuestDetailTextView = (TextView) view.findViewById(R.id.question_detail);
-        mQuestUserPostTextView = (TextView) view.findViewById(R.id.question_user_post);
-        mQuestDatePostTextView = (TextView) view.findViewById(R.id.question_date_post);
-        mQuestCompanyTextView = (TextView) view.findViewById(R.id.question_company);
-        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_question_add, container, false);
+
+        mQuestDetailEditText = (EditText) view.findViewById(R.id.question_detail);
+        mQuestCompanyEditText = (EditText) view.findViewById(R.id.question_company);
+        mQuestTags = (EditText) view.findViewById(R.id.question_tags);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.add_question);
-        floatingActionButton.show();
+        floatingActionButton.hide();
+
+        Button addCourseButton = (Button) view.findViewById(R.id.add_question_button);
+        addCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = buildQuestURL(v);
+                mListener.addQuestion(url);
+            }
+        });
         return view;
     }
 
+    private String buildQuestURL(View v) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            String questDetail = mQuestDetailEditText.getText().toString();
+            sb.append("QuestDetail=");
+            sb.append(URLEncoder.encode(questDetail, "UTF-8"));
+
+            String questCompany = mQuestCompanyEditText.getText().toString();
+            sb.append("QuestCompany=");
+            sb.append(URLEncoder.encode(questCompany, "UTF-8"));
+
+            // TODO : add tags to another table in database
+        } catch (Exception e) {
+            Toast.makeText(v.getContext(), "Something wrong with the url " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(String question) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.addQuestion(question);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof QuestionAddListener) {
+            mListener = (QuestionAddListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement QuestionAddListener");
@@ -134,14 +146,12 @@ public class QuestionPostFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        // TODO: decide what to do when user touch the question post
-        void onFragmentInteraction(Uri uri);
+    public interface QuestionAddListener {
+        void addQuestion(String question);
     }
 }

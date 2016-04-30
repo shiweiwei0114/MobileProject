@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import tcss450.uw.edu.mobileproject.QuestionsListFragment.OnListFragmentInteractionListener;
-import tcss450.uw.edu.mobileproject.content.Question;
+import tcss450.uw.edu.mobileproject.model.Question;
 
 import java.util.List;
 

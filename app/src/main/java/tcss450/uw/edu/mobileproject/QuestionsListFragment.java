@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import tcss450.uw.edu.mobileproject.content.Question;
+import tcss450.uw.edu.mobileproject.model.Question;
 
 /**
  * A fragment representing a list of Items.

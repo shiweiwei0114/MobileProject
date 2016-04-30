@@ -7,6 +7,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="question_detail_hint">Enter Question Detail</string>
+    <string name="question_company">Which company ask the question?</string>
+    <string name="question_tags">Tags (Ex: Algorithm, Database, etc.)</string>
+    <string name="question_add_button">add question</string>
 </resources>

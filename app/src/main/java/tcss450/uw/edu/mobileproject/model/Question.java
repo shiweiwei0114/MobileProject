@@ -1,4 +1,4 @@
-package tcss450.uw.edu.mobileproject.content;
+package tcss450.uw.edu.mobileproject.model;
 
 import org.json.JSONArray;
 import org.json.JSONException;

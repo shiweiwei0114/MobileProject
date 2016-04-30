@@ -12,12 +12,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import tcss450.uw.edu.mobileproject.content.Question;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import tcss450.uw.edu.mobileproject.model.Question;
 
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        QuestionsListFragment.OnListFragmentInteractionListener {
+        QuestionsListFragment.OnListFragmentInteractionListener,
+        QuestionAddFragment.QuestionAddListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +45,15 @@ public class HomeActivity extends AppCompatActivity implements
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    QuestionAddFragment questionAddFragment = new QuestionAddFragment();
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.fragment_container, questionAddFragment)
-//                            .addToBackStack(null)
-//                            .commit();
+                    QuestionAddFragment questionAddFragment = new QuestionAddFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, questionAddFragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
         }
+
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             QuestionsListFragment questListFragment = new QuestionsListFragment();
             getSupportFragmentManager().beginTransaction()
@@ -118,10 +130,6 @@ public class HomeActivity extends AppCompatActivity implements
         return true;
     }
 
-    private void addTags() {
-
-    }
-
     @Override
     public void onListFragmentInteraction(Question item) {
         QuestionPostFragment courseDetailFragment = new QuestionPostFragment();
@@ -136,6 +144,15 @@ public class HomeActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    @Override
+    public void addQuestion(String question) {
+        AddQuestionTask task = new AddQuestionTask();
+        task.execute(new String[]{question.toString()});
+
+        // Takes you back to the previous fragment by popping the current fragment out.
+        getSupportFragmentManager().popBackStackImmediate();
+    }
+
     private class AddQuestionTask extends AsyncTask<String, Void, String> {
 
         /**
@@ -146,15 +163,62 @@ public class HomeActivity extends AppCompatActivity implements
          * This method can call {@link #publishProgress} to publish updates
          * on the UI thread.
          *
-         * @param params The parameters of the task.
+         * @param urls The parameters of the task.
          * @return A result, defined by the subclass of this task.
          * @see #onPreExecute()
          * @see #onPostExecute
          * @see #publishProgress
          */
         @Override
-        protected String doInBackground(String... params) {
-            return null;
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to add question, Reason: " + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();;
+                }
+            }
+            return response;
+        }
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String status = (String) jsonObject.get("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getApplicationContext(), "Question successfully added!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to add: "
+                            + jsonObject.get("error"), Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong with the data "
+                        + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
