@@ -13,4 +13,8 @@
     <string name="question_company">Which company ask the question?</string>
     <string name="question_tags">Tags (Ex: Algorithm, Database, etc.)</string>
     <string name="question_add_button">add question</string>
+
+    <string name="login_userId_hint">Enter your user ID</string>
+    <string name="login_psw_hint">Enter your password</string>
+    <string name="login_text">Log in</string>
 </resources>
