@@ -101,6 +101,10 @@ public class QuestionAddFragment extends Fragment {
     private String buildQuestURL(View v) {
         StringBuilder sb = new StringBuilder();
         try {
+            String email = "";
+            sb.append("email=");
+            sb.append(URLEncoder.encode(email, "UTF-8"));
+
             String questDetail = mQuestDetailEditText.getText().toString();
             sb.append("questDetail=");
             sb.append(URLEncoder.encode(questDetail, "UTF-8"));
