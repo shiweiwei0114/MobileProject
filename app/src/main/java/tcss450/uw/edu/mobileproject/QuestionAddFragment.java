@@ -102,14 +102,16 @@ public class QuestionAddFragment extends Fragment {
         StringBuilder sb = new StringBuilder();
         try {
             String questDetail = mQuestDetailEditText.getText().toString();
-            sb.append("QuestDetail=");
+            sb.append("questDetail=");
             sb.append(URLEncoder.encode(questDetail, "UTF-8"));
 
             String questCompany = mQuestCompanyEditText.getText().toString();
-            sb.append("QuestCompany=");
+            sb.append("&questCompany=");
             sb.append(URLEncoder.encode(questCompany, "UTF-8"));
 
-            // TODO : add tags to another table in database
+            String tags = mQuestTags.getText().toString();
+            sb.append("&tags=");
+            sb.append(URLEncoder.encode(tags, "UTF-8"));
         } catch (Exception e) {
             Toast.makeText(v.getContext(), "Something wrong with the url " + e.getMessage(),
                     Toast.LENGTH_LONG).show();
