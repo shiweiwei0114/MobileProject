@@ -32,7 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button mRegisterButton;
     private Button mBackToLogInButton;
 
-
+    public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
 
     private String url = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
 
@@ -54,7 +54,9 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0){
                     url += "?email=" + mEmailText.getText().toString() + "&pwd=" + mPwdText.getText().toString();
-                    new RegistrationTask().execute(url);
+                    RegistrationTask task = new RegistrationTask();
+                    task.setUser(mEmailText.getText().toString());
+                    task.execute(url);
                 }
             }
         });
@@ -71,7 +73,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private class RegistrationTask extends AsyncTask<String, Void, String> {
 
+        private String mUser;
+
         private static final String TAG = "RegistrationTask";
+
+        void setUser(String user) {
+            mUser = user;
+        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -156,7 +164,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                    intent.putExtra(USER_EMAIL, mUser);
                     startActivity(intent);
+                    finish();
                 } else {
                     String reason = jsonObject.getString("error");
                     Toast.makeText(getApplicationContext(), "Failed :" + reason,

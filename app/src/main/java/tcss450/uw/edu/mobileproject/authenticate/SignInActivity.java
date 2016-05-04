@@ -53,64 +53,60 @@ public class SignInActivity extends AppCompatActivity {
         //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
 
         //setup input fields
-        mEmailText = (EditText)findViewById(R.id.login_email);
-        mPwdText = (EditText)findViewById(R.id.login_psw);
+        mEmailText = (EditText) findViewById(R.id.login_email);
+        mPwdText = (EditText) findViewById(R.id.login_psw);
 
         //setup buttons
-        mSignInButton = (Button)findViewById(R.id.login_button);
-        mRegisterButton = (Button)findViewById(R.id.linkTo_register_button);
+        mSignInButton = (Button) findViewById(R.id.login_button);
+        mRegisterButton = (Button) findViewById(R.id.linkTo_register_button);
 
         mDialog = new ProgressDialog(SignInActivity.this);
 
         //setup listeners
         mSignInButton.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public void login(String userId, String pwd) {
-        Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra(USER_EMAIL, userId);
-        startActivity(i);
-        finish();
             @Override
             public void onClick(View v) {
 
-                    String userId = mEmailText.getText().toString();
-                    String pwd = mPwdText.getText().toString();
-                    if (TextUtils.isEmpty(userId))  {
-                        Toast.makeText(v.getContext(), "Enter userid"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mEmailText.requestFocus();
-                        return;
-                    }
-                    if (!userId.contains("@")) {
-                        Toast.makeText(v.getContext(), "Enter a valid email address"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mEmailText.requestFocus();
-                        return;
-                    }
+                final String userId = mEmailText.getText().toString();
+                String pwd = mPwdText.getText().toString();
+                if (TextUtils.isEmpty(userId)) {
+                    Toast.makeText(v.getContext(), "Enter userid"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mEmailText.requestFocus();
+                    return;
+                }
+                if (!userId.contains("@")) {
+                    Toast.makeText(v.getContext(), "Enter a valid email address"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mEmailText.requestFocus();
+                    return;
+                }
 
-                    if (TextUtils.isEmpty(pwd))  {
-                        Toast.makeText(v.getContext(), "Enter password"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mPwdText.requestFocus();
-                        return;
-                    }
-                    if (pwd.length() < 6) {
-                        Toast.makeText(v.getContext(), "Enter password of at least 6 characters"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mPwdText.requestFocus();
-                        return;
-                    }
+                if (TextUtils.isEmpty(pwd)) {
+                    Toast.makeText(v.getContext(), "Enter password"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mPwdText.requestFocus();
+                    return;
+                }
+                if (pwd.length() < 6) {
+                    Toast.makeText(v.getContext(), "Enter password of at least 6 characters"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mPwdText.requestFocus();
+                    return;
+                }
 
-                    if (userId.length() != 0 && pwd.length() != 0){
-                        url += "?email=" + userId + "&pwd=" +pwd;
-                        new LogInTask().execute(url);
-                        return;
-                    }
+                if (userId.length() != 0 && pwd.length() != 0) {
+                    url += "?email=" + userId + "&pwd=" + pwd;
+                    LogInTask login = new LogInTask();
+                    login.setUserId(userId);
+                    login.execute(url);
+                    return;
+                }
             }
         });
 
@@ -122,20 +118,17 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
-
-
-//    @Override
-//    public void login(String userId, String pwd) {
-//        Intent i = new Intent(this, HomeActivity.class);
-//        startActivity(i);
-//        finish();
-//    }
 
     private class LogInTask extends AsyncTask<String, Void, String> {
 
         private static final String TAG = "LogInTask";
+
+        private String mUser;
+
+        void setUserId(String email) {
+            mUser = email;
+        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -150,6 +143,7 @@ public class SignInActivity extends AppCompatActivity {
         /**
          * JSON Parser:
          * Given a URL, establishes an HttpUrlConnection and retrieves the webpage conten as a InputStream
+         *
          * @param myUrl
          * @return a string
          * @throws IOException
@@ -181,10 +175,9 @@ public class SignInActivity extends AppCompatActivity {
 
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch(Exception e ) {
+            } catch (Exception e) {
                 Log.d(TAG, "Something happened" + e.getMessage());
-            }
-            finally {
+            } finally {
                 if (is != null) {
                     is.close();
                 }
@@ -194,6 +187,7 @@ public class SignInActivity extends AppCompatActivity {
 
         /**
          * Read an inputStream and convert it to a String.
+         *
          * @param stream
          * @param len
          * @return
@@ -223,6 +217,7 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "Successfully log in...",
                             Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(SignInActivity.this, HomeActivity.class);
+                    myIntent.putExtra(USER_EMAIL, mUser);
                     finish();
                     startActivity(myIntent);
                     hideDialog();
@@ -232,7 +227,6 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "Failed :" + reason,
                             Toast.LENGTH_SHORT)
                             .show();
-
                 }
 
                 //getFragmentManager().popBackStackImmediate();
