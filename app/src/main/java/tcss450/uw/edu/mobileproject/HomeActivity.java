@@ -1,9 +1,9 @@
 package tcss450.uw.edu.mobileproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -23,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 import tcss450.uw.edu.mobileproject.model.Question;
 
 public class HomeActivity extends AppCompatActivity implements
@@ -101,6 +103,13 @@ public class HomeActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
+            Intent i = new Intent(this, SignInActivity.class);
+            startActivity(i);
+            finish();
             return true;
         }
 

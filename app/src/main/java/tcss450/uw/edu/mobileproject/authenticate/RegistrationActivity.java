@@ -1,11 +1,9 @@
 package tcss450.uw.edu.mobileproject.authenticate;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,114 +23,58 @@ import java.net.URL;
 import tcss450.uw.edu.mobileproject.HomeActivity;
 import tcss450.uw.edu.mobileproject.R;
 
-public class SignInActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     //variables
     private EditText mEmailText;
     private EditText mPwdText;
 
-    private Button mSignInButton;
-    private  Button mRegisterButton;
+    private Button mRegisterButton;
+    private Button mBackToLogInButton;
 
-    private String url = "http://cssgate.insttech.washington.edu/~_450btm7/login.php";
 
-    //Progress Dialog
-    private ProgressDialog mDialog;
 
-    //Constant
-    //JSON element ids from response of php script
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
+    private String url = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_registration);
 
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
+        mEmailText = (EditText)findViewById(R.id.reg_email);
+        mPwdText = (EditText)findViewById(R.id.reg_psw);
 
-        //setup input fields
-        mEmailText = (EditText)findViewById(R.id.login_email);
-        mPwdText = (EditText)findViewById(R.id.login_psw);
-
-        //setup buttons
-        mSignInButton = (Button)findViewById(R.id.login_button);
-        mRegisterButton = (Button)findViewById(R.id.linkTo_register_button);
-
-        mDialog = new ProgressDialog(SignInActivity.this);
-
-        //setup listeners
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                    String userId = mEmailText.getText().toString();
-                    String pwd = mPwdText.getText().toString();
-                    if (TextUtils.isEmpty(userId))  {
-                        Toast.makeText(v.getContext(), "Enter userid"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mEmailText.requestFocus();
-                        return;
-                    }
-                    if (!userId.contains("@")) {
-                        Toast.makeText(v.getContext(), "Enter a valid email address"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mEmailText.requestFocus();
-                        return;
-                    }
-
-                    if (TextUtils.isEmpty(pwd))  {
-                        Toast.makeText(v.getContext(), "Enter password"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mPwdText.requestFocus();
-                        return;
-                    }
-                    if (pwd.length() < 6) {
-                        Toast.makeText(v.getContext(), "Enter password of at least 6 characters"
-                                , Toast.LENGTH_SHORT)
-                                .show();
-                        mPwdText.requestFocus();
-                        return;
-                    }
-
-                    if (userId.length() != 0 && pwd.length() != 0){
-                        url += "?email=" + userId + "&pwd=" +pwd;
-                        new LogInTask().execute(url);
-                        return;
-                    }
-            }
-        });
+        mRegisterButton = (Button)findViewById(R.id.register_button);
+        mBackToLogInButton = (Button)findViewById(R.id.linkTo_login_button);
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this, RegistrationActivity.class);
-                startActivity(i);
+                if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0){
+                    url += "?email=" + mEmailText.getText().toString() + "&pwd=" + mPwdText.getText().toString();
+                    new RegistrationTask().execute(url);
+                }
             }
         });
 
+        mBackToLogInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RegistrationActivity.this, SignInActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 
-//    @Override
-//    public void login(String userId, String pwd) {
-//        Intent i = new Intent(this, HomeActivity.class);
-//        startActivity(i);
-//        finish();
-//    }
+    private class RegistrationTask extends AsyncTask<String, Void, String> {
 
-    private class LogInTask extends AsyncTask<String, Void, String> {
-
-        private static final String TAG = "LogInTask";
+        private static final String TAG = "RegistrationTask";
 
         @Override
         protected String doInBackground(String... urls) {
-
             try {
                 return downloadUrl(urls[0]);
             } catch (IOException e) {
@@ -204,55 +146,31 @@ public class SignInActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
+            // Parse JSON
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 String status = jsonObject.getString("result");
-
                 if (status.equalsIgnoreCase("success")) {
-
-                    showDialog();
-                    mDialog.setMessage("Logging in ...");
-
-                    Toast.makeText(SignInActivity.this, "Successfully log in...",
-                            Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(SignInActivity.this, HomeActivity.class);
-                    finish();
-                    startActivity(myIntent);
-                    hideDialog();
-                } else {
-
-                    String reason = jsonObject.getString("error");
-                    Toast.makeText(SignInActivity.this, "Failed :" + reason,
+                    Toast.makeText(getApplicationContext(), "Successfully created a new account!",
                             Toast.LENGTH_SHORT)
                             .show();
-
+                    Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    String reason = jsonObject.getString("error");
+                    Toast.makeText(getApplicationContext(), "Failed :" + reason,
+                            Toast.LENGTH_SHORT)
+                            .show();
                 }
 
                 //getFragmentManager().popBackStackImmediate();
-
             } catch (Exception e) {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
         }
-    }
 
-    /**
-     * Method for showing progressDialog
-     */
-    private void showDialog() {
-        if (!mDialog.isShowing())
-            mDialog.show();
-    }
-
-    /**
-     * Method for hiding progressdialog
-     */
-    private void hideDialog() {
-        if (mDialog.isShowing())
-            mDialog.dismiss();
     }
 }
-
-
 
 
