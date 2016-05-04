@@ -9,6 +9,7 @@ import tcss450.uw.edu.mobileproject.R;
 
 public class SignInActivity extends AppCompatActivity implements LoginFragment.LoginInteractionListener {
 
+    public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,7 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     @Override
     public void login(String userId, String pwd) {
         Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra(USER_EMAIL, userId);
         startActivity(i);
         finish();
     }

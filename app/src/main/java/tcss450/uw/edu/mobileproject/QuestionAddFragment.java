@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import java.net.URLEncoder;
  */
 public class QuestionAddFragment extends Fragment {
 
+    private final static String LOG = "QuestionAddFragment";
+
     // TODO : implement PHP for addQuestion
     private final static String QUESTION_ADD_URL =
             "http://cssgate.insttech.washington.edu/~_450btm7/addQuestion.php?";
@@ -37,6 +40,7 @@ public class QuestionAddFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String mUserEmail = "";
     private QuestionAddListener mListener;
     private EditText mQuestDetailEditText;
     private EditText mQuestCompanyEditText;
@@ -98,23 +102,30 @@ public class QuestionAddFragment extends Fragment {
         return view;
     }
 
+    public void setUserEmail(String email) {
+        mUserEmail = email;
+    }
+
     private String buildQuestURL(View v) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(QUESTION_ADD_URL);
         try {
-            String email = "";
             sb.append("email=");
-            sb.append(URLEncoder.encode(email, "UTF-8"));
+            sb.append(URLEncoder.encode(mUserEmail, "UTF-8"));
+            Log.i(LOG, mUserEmail);
 
             String questDetail = mQuestDetailEditText.getText().toString();
-            sb.append("questDetail=");
+            sb.append("&questDetail=");
+            Log.i(LOG, questDetail);
             sb.append(URLEncoder.encode(questDetail, "UTF-8"));
 
             String questCompany = mQuestCompanyEditText.getText().toString();
             sb.append("&questCompany=");
+            Log.i(LOG, questCompany);
             sb.append(URLEncoder.encode(questCompany, "UTF-8"));
 
             String tags = mQuestTags.getText().toString();
             sb.append("&tags=");
+            Log.i(LOG, tags);
             sb.append(URLEncoder.encode(tags, "UTF-8"));
         } catch (Exception e) {
             Toast.makeText(v.getContext(), "Something wrong with the url " + e.getMessage(),
@@ -124,9 +135,9 @@ public class QuestionAddFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String question) {
+    public void onButtonPressed(String url) {
         if (mListener != null) {
-            mListener.addQuestion(question);
+            mListener.addQuestion(url);
         }
     }
 
@@ -158,6 +169,6 @@ public class QuestionAddFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface QuestionAddListener {
-        void addQuestion(String question);
+        void addQuestion(String url);
     }
 }

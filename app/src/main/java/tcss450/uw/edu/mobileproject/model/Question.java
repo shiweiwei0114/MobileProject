@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class Question implements Serializable {
     private String mQuestDetail;
     private String mUserEmail;
     private String mCompany;
-    private List<String> mTags;
+//    private List<String> mTags;
     private String mQuestDatePost;
 
     public Question(String id, String email, String now,
@@ -33,7 +32,7 @@ public class Question implements Serializable {
         mQuestDatePost = now;
         mQuestDetail = questDetail;
         mCompany = company;
-        mTags = new LinkedList<>();
+//        mTags = new LinkedList<>();
     }
 
     public String getId() {
@@ -52,9 +51,9 @@ public class Question implements Serializable {
         return mUserEmail;
     }
 
-    public List<String> getTags() {
-        return new LinkedList<>(mTags);
-    }
+//    public List<String> getTags() {
+//        return new LinkedList<>(mTags);
+//    }
 
     public String getCompany() {
         return mCompany;

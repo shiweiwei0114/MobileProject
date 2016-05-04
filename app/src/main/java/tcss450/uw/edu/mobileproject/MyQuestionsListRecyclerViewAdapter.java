@@ -37,6 +37,7 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getQuestDetail());
+        holder.mDateView.setText(mValues.get(position).getQuestDatePost());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,12 +59,14 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
+        public final TextView mDateView;
         public Question mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.title);
+            mDateView = (TextView) view.findViewById(R.id.question_date_post);
         }
 
         @Override
