@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -77,12 +78,16 @@ public class QuestionsListFragment extends Fragment {
 //            recyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(QuestionContent.ITEMS, mListener));
         }
 
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.add_question);
+        floatingActionButton.show();
+
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             DownloadQuestionsTask task = new DownloadQuestionsTask();
-            task.execute(new String[]{QUEST_URL});
+            task.execute(QUEST_URL);
         } else {
             Toast.makeText(view.getContext(),
                     "No network connection available. Cannot display courses",
@@ -148,7 +153,7 @@ public class QuestionsListFragment extends Fragment {
                         response += s;
                     }
                 } catch (Exception e) {
-                    response = "Unable to download the list of courses, Reason: " + e.getMessage();
+                    response = "Unable to download the list of questions, Reason: " + e.getMessage();
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
@@ -207,7 +212,6 @@ public class QuestionsListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Question item);
     }
 }

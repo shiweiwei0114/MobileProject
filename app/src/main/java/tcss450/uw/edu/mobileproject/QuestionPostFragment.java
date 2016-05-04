@@ -38,7 +38,7 @@ public class QuestionPostFragment extends Fragment {
     private TextView mQuestDatePostTextView;
     private TextView mQuestCompanyTextView;
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
     public QuestionPostFragment() {
         // Required empty public constructor
@@ -70,10 +70,24 @@ public class QuestionPostFragment extends Fragment {
         // onStart is a good place to do this because the layout has already been
         // applied to the fragment at this point so we can safely call the method
         // below that sets the article text.
+//        Bundle args = getArguments();
+//        if (args != null) {
+//            mParam1 = args.getString(ARG_PARAM1);
+//            mParam2 = args.getString(ARG_PARAM2);
+//            // Set article based on argument passed in
+//        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // During startup, check if there are arguments passed to the fragment.
+        // onStart is a good place to do this because the layout has already been
+        // applied to the fragment at this point so we can safely call the method
+        // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
-            mParam1 = args.getString(ARG_PARAM1);
-            mParam2 = args.getString(ARG_PARAM2);
             // Set article based on argument passed in
             updateView((Question) args.getSerializable(QUEST_SELECTED));
         }
@@ -107,26 +121,26 @@ public class QuestionPostFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement QuestionAddListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement QuestionAddListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
     /**
@@ -139,9 +153,9 @@ public class QuestionPostFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        // TODO: decide what to do when user touch the question post
-        void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        // TODO: decide what to do when user touch the question post
+//        void onFragmentInteraction(Uri uri);
+//    }
 }

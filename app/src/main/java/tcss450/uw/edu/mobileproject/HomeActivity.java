@@ -1,9 +1,9 @@
 package tcss450.uw.edu.mobileproject;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -32,6 +31,10 @@ public class HomeActivity extends AppCompatActivity implements
         QuestionsListFragment.OnListFragmentInteractionListener,
         QuestionAddFragment.QuestionAddListener {
 
+    private final static String LOG = "HomeActivity";
+
+    private String mUserEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +42,8 @@ public class HomeActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Intent intent = getIntent();
+        mUserEmail = intent.getStringExtra(SignInActivity.USER_EMAIL);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_question);
         if (fab != null) {
@@ -48,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     QuestionAddFragment questionAddFragment = new QuestionAddFragment();
+                    questionAddFragment.setUserEmail(mUserEmail);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, questionAddFragment)
                             .addToBackStack(null)
@@ -141,23 +145,21 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(Question item) {
-        QuestionPostFragment courseDetailFragment = new QuestionPostFragment();
+        QuestionPostFragment questionPostFragment = new QuestionPostFragment();
         Bundle args = new Bundle();
         args.putSerializable(QuestionPostFragment.QUEST_SELECTED, item);
-        courseDetailFragment.setArguments(args);
-
+        questionPostFragment.setArguments(args);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, courseDetailFragment)
+                .replace(R.id.fragment_container, questionPostFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public void addQuestion(String question) {
+    public void addQuestion(String url) {
         AddQuestionTask task = new AddQuestionTask();
-        task.execute(new String[]{question.toString()});
-
+        task.execute(new String[]{url.toString()});
         // Takes you back to the previous fragment by popping the current fragment out.
         getSupportFragmentManager().popBackStackImmediate();
     }

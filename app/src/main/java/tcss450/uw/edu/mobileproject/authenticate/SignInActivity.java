@@ -44,6 +44,7 @@ public class SignInActivity extends AppCompatActivity {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
 
+    public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,12 @@ public class SignInActivity extends AppCompatActivity {
         //setup listeners
         mSignInButton.setOnClickListener(new View.OnClickListener() {
 
+    @Override
+    public void login(String userId, String pwd) {
+        Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra(USER_EMAIL, userId);
+        startActivity(i);
+        finish();
             @Override
             public void onClick(View v) {
 
