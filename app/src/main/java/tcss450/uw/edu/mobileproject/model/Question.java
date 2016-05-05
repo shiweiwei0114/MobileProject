@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject.model;
 
 import org.json.JSONArray;
@@ -8,7 +13,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by KyleD on 4/29/16.
+ * The content of the question.
+ *
+ * @author KyleD, Weiwei
+ * @version 1.0
  */
 public class Question implements Serializable {
 

@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Context;
@@ -26,19 +31,19 @@ import java.util.List;
 import tcss450.uw.edu.mobileproject.model.Question;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Questions.
  * <p>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
+ * @author KyleD, Weiwei
+ * @version 1.0
  */
 public class QuestionsListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     public static final String QUEST_URL =
             "http://cssgate.insttech.washington.edu/~_450btm7/test.php?cmd=questions";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
@@ -92,13 +97,6 @@ public class QuestionsListFragment extends Fragment {
             Toast.makeText(view.getContext(),
                     "No network connection available. Cannot display courses",
                     Toast.LENGTH_SHORT).show();
-
-//            if(mCourseDB == null) {
-//                mCourseDB = new CourseDB(getActivity());
-//            }
-//            if (mCourseList == null) {
-//                mCourseList = mCourseDB.getCourses();
-//            }
             mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(new ArrayList<Question>(), mListener));
         }
         return view;
@@ -181,23 +179,6 @@ public class QuestionsListFragment extends Fragment {
             // Everything is good, show the list of courses.
             if (!mQuestsList.isEmpty()) {
                 mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(questList, mListener));
-
-//                if (mCourseDB == null) {
-//                    mCourseDB = new CourseDB(getActivity());
-//                }
-//
-//                // Delete old data so that you can refresh the local
-//                // database with the network data.
-//                mCourseDB.deleteCourses();;
-//
-//                // Also, add to the local database
-//                for (int i = 0; i < mCourseList.size(); i++) {
-//                    Course course = mCourseList.get(i);
-//                    mCourseDB.insertCourse(course.getCourseId(),
-//                            course.getShortDesc(),
-//                            course.getLongDesc(),
-//                            course.getPreReqs());
-//                }
             }
         }
     }

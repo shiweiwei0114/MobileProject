@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Context;
@@ -23,22 +28,15 @@ import java.net.URLEncoder;
  * to handle interaction events.
  * Use the {@link QuestionAddFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @author KyleD, Weiwei
+ * @version 1.0
  */
 public class QuestionAddFragment extends Fragment {
 
     private final static String LOG = "QuestionAddFragment";
 
-    // TODO : implement PHP for addQuestion
     private final static String QUESTION_ADD_URL =
             "http://cssgate.insttech.washington.edu/~_450btm7/addQuestion.php?";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private String mUserEmail = "";
     private QuestionAddListener mListener;
@@ -62,8 +60,6 @@ public class QuestionAddFragment extends Fragment {
     public static QuestionAddFragment newInstance(String param1, String param2) {
         QuestionAddFragment fragment = new QuestionAddFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +68,7 @@ public class QuestionAddFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 

@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Context;
@@ -14,24 +19,15 @@ import tcss450.uw.edu.mobileproject.model.Question;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link QuestionPostFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * A simple {@link Fragment} subclass show the post of questions.
  * Use the {@link QuestionPostFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @author KyleD, Weiwei
+ * @version 1.0
  */
 public class QuestionPostFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     public static String QUEST_SELECTED = "";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private TextView mQuestDetailTextView;
     private TextView mQuestUserPostTextView;
@@ -56,8 +52,6 @@ public class QuestionPostFragment extends Fragment {
     public static QuestionPostFragment newInstance(String param1, String param2) {
         QuestionPostFragment fragment = new QuestionPostFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +66,6 @@ public class QuestionPostFragment extends Fragment {
         // below that sets the article text.
 //        Bundle args = getArguments();
 //        if (args != null) {
-//            mParam1 = args.getString(ARG_PARAM1);
-//            mParam2 = args.getString(ARG_PARAM2);
 //            // Set article based on argument passed in
 //        }
     }
