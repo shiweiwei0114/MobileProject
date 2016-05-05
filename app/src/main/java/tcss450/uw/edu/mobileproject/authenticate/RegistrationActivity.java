@@ -1,3 +1,9 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
+ */
+
 package tcss450.uw.edu.mobileproject.authenticate;
 
 import android.content.Intent;
@@ -23,6 +29,13 @@ import java.net.URL;
 import tcss450.uw.edu.mobileproject.HomeActivity;
 import tcss450.uw.edu.mobileproject.R;
 
+
+/**
+ * The user can register a new account.
+ *
+ * @author Weiwei Shi
+ * @version May 5, 2016
+ */
 public class RegistrationActivity extends AppCompatActivity {
 
     //variables
@@ -42,17 +55,17 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mEmailText = (EditText)findViewById(R.id.reg_email);
-        mPwdText = (EditText)findViewById(R.id.reg_psw);
+        mEmailText = (EditText) findViewById(R.id.reg_email);
+        mPwdText = (EditText) findViewById(R.id.reg_psw);
 
-        mRegisterButton = (Button)findViewById(R.id.register_button);
-        mBackToLogInButton = (Button)findViewById(R.id.linkTo_login_button);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
+        mBackToLogInButton = (Button) findViewById(R.id.linkTo_login_button);
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0){
+                if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0) {
                     url += "?email=" + mEmailText.getText().toString() + "&pwd=" + mPwdText.getText().toString();
                     RegistrationTask task = new RegistrationTask();
                     task.setUser(mEmailText.getText().toString());
@@ -70,7 +83,10 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Retrieve data by using web service.
+     * Network connection credits: http://developer.android.com/training/basics/network-ops/connecting.html
+     */
     private class RegistrationTask extends AsyncTask<String, Void, String> {
 
         private String mUser;
@@ -91,9 +107,9 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         /**
-         * JSON Parser:
-         * Given a URL, establishes an HttpUrlConnection and retrieves the webpage conten as a InputStream
-         * @param myUrl
+         * Given a URL, establishes an HttpUrlConnection and retrieves the web page content as a InputStream.
+         *
+         * @param myUrl the URL link
          * @return a string
          * @throws IOException
          */
@@ -124,10 +140,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch(Exception e ) {
+            } catch (Exception e) {
                 Log.d(TAG, "Something happened" + e.getMessage());
-            }
-            finally {
+            } finally {
                 if (is != null) {
                     is.close();
                 }
@@ -137,9 +152,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         /**
          * Read an inputStream and convert it to a String.
+         *
          * @param stream
-         * @param len
-         * @return
+         * @param len the length of the InputStream
+         * @return a string so that the activity can display it in the UI
          * @throws IOException
          * @throws UnsupportedEncodingException
          */
@@ -173,8 +189,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT)
                             .show();
                 }
-
-                //getFragmentManager().popBackStackImmediate();
             } catch (Exception e) {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }

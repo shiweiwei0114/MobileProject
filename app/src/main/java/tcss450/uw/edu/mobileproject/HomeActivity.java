@@ -1,8 +1,9 @@
-/**
+/*
  * TCSS 450 - Mobile App Programming
- * May 5th, 2016
- * Weiwei Shi, Kyle Doan
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
  */
+
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Intent;
@@ -35,8 +36,8 @@ import tcss450.uw.edu.mobileproject.model.Question;
 /**
  * The home page of activity of the app.
  *
- * @author KyleD, Weiwei
- * @version 1.0
+ * @author Kyle Doan
+ * @version May 5, 2016
  */
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -181,11 +182,8 @@ public class HomeActivity extends AppCompatActivity implements
 
         /**
          * Override this method to perform a computation on a background thread. The
-         * specified parameters are the parameters passed to {@link #execute}
-         * by the caller of this task.
-         * <p/>
-         * This method can call {@link #publishProgress} to publish updates
-         * on the UI thread.
+         * specified parameters are the parameters passed to {@link #execute} by the caller of this task.
+         * This method can call {@link #publishProgress} to publish updates on the UI thread.
          *
          * @param urls The parameters of the task.
          * @return A result, defined by the subclass of this task.

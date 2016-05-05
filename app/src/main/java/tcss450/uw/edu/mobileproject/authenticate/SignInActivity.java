@@ -1,3 +1,9 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
+ */
+
 package tcss450.uw.edu.mobileproject.authenticate;
 
 import android.app.ProgressDialog;
@@ -25,6 +31,12 @@ import java.net.URL;
 import tcss450.uw.edu.mobileproject.HomeActivity;
 import tcss450.uw.edu.mobileproject.R;
 
+/**
+ * The user can sign in.
+ *
+ * @author Weiwei Shi
+ * @version May 5, 2016
+ */
 public class SignInActivity extends AppCompatActivity {
 
     //variables
@@ -32,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText mPwdText;
 
     private Button mSignInButton;
-    private  Button mRegisterButton;
+    private Button mRegisterButton;
 
     private String url = "http://cssgate.insttech.washington.edu/~_450btm7/login.php";
 
@@ -45,12 +57,11 @@ public class SignInActivity extends AppCompatActivity {
     private static final String TAG_MESSAGE = "message";
 
     public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
 
         //setup input fields
         mEmailText = (EditText) findViewById(R.id.login_email);
@@ -120,6 +131,10 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Retrieve data by using web service.
+     * Network connection credits: http://developer.android.com/training/basics/network-ops/connecting.html
+     */
     private class LogInTask extends AsyncTask<String, Void, String> {
 
         private static final String TAG = "LogInTask";
@@ -141,10 +156,9 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         /**
-         * JSON Parser:
-         * Given a URL, establishes an HttpUrlConnection and retrieves the webpage conten as a InputStream
+         * Given a URL, establishes an HttpUrlConnection and retrieves the web page content as a InputStream.
          *
-         * @param myUrl
+         * @param myUrl the URL link
          * @return a string
          * @throws IOException
          */
@@ -189,8 +203,8 @@ public class SignInActivity extends AppCompatActivity {
          * Read an inputStream and convert it to a String.
          *
          * @param stream
-         * @param len
-         * @return
+         * @param len the length of the InputStream
+         * @return a string so that the activity can display it in the UI
          * @throws IOException
          * @throws UnsupportedEncodingException
          */
@@ -229,8 +243,6 @@ public class SignInActivity extends AppCompatActivity {
                             .show();
                 }
 
-                //getFragmentManager().popBackStackImmediate();
-
             } catch (Exception e) {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
@@ -246,7 +258,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Method for hiding progressdialog
+     * Method for hiding progressDialog
      */
     private void hideDialog() {
         if (mDialog.isShowing())
