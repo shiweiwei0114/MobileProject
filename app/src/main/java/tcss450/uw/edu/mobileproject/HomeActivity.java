@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Intent;
@@ -27,6 +32,12 @@ import java.net.URL;
 import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 import tcss450.uw.edu.mobileproject.model.Question;
 
+/**
+ * The home page of activity of the app.
+ *
+ * @author KyleD, Weiwei
+ * @version 1.0
+ */
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         QuestionsListFragment.OnListFragmentInteractionListener,
@@ -34,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     private final static String LOG = "HomeActivity";
 
+    /** user email to transfer to other fragment. */
     private String mUserEmail;
 
     @Override

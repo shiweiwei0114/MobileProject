@@ -1,3 +1,8 @@
+/**
+ * TCSS 450 - Mobile App Programming
+ * May 5th, 2016
+ * Weiwei Shi, Kyle Doan
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +19,15 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Question} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ * @author KyleD
+ * @version 1.0
  */
 public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQuestionsListRecyclerViewAdapter.ViewHolder> {
 
+    /**List of questions. */
     private final List<Question> mValues;
+
+    /**Listener for callback. */
     private final OnListFragmentInteractionListener mListener;
 
     public MyQuestionsListRecyclerViewAdapter(List<Question> items, OnListFragmentInteractionListener listener) {
@@ -56,6 +65,11 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
         return mValues.size();
     }
 
+    /**
+     * ViewHolder class.
+     * @author KyleD, Weiwei
+     * @version 1.0
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
