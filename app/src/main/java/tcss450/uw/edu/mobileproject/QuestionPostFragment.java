@@ -51,7 +51,6 @@ public class QuestionPostFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment QuestionPostFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static QuestionPostFragment newInstance(String param1, String param2) {
         QuestionPostFragment fragment = new QuestionPostFragment();
         Bundle args = new Bundle();
