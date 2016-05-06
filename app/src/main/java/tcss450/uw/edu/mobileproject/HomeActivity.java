@@ -1,15 +1,15 @@
-/**
+/*
  * TCSS 450 - Mobile App Programming
- * May 5th, 2016
- * Weiwei Shi, Kyle Doan
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
  */
+
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,8 +36,8 @@ import tcss450.uw.edu.mobileproject.model.Question;
 /**
  * The home page of activity of the app.
  *
- * @author KyleD, Weiwei
- * @version 1.0
+ * @author Kyle Doan, Weiwei Shi
+ * @version May 5, 2016
  */
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -49,6 +49,10 @@ public class HomeActivity extends AppCompatActivity implements
     /** user email to transfer to other fragment. */
     private String mUserEmail;
 
+    /**
+     * Called when the activity is starting.
+     * @param savedInstanceState contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,11 @@ public class HomeActivity extends AppCompatActivity implements
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_question);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * FloatingActionButton onClickListener,send the data to the web server.
+                 * @param v view
+                 */
                 @Override
                 public void onClick(View v) {
                     QuestionAddFragment questionAddFragment = new QuestionAddFragment();
@@ -95,6 +104,9 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Called when the activity has detected the user's press of the back key.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -105,6 +117,11 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Called when a context menu for the view is about to be shown.
+     * @param menu The context menu that is being built.
+     * @return return true if it has options
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -112,6 +129,11 @@ public class HomeActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Called whenever an item in your options menu is selected.
+     * @param item the menu item that was selected.
+     * @return return true if has item.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -134,6 +156,11 @@ public class HomeActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Called whenever a navigation item in the action bar is selected.
+     * @param item is selected.
+     * @return true if the item is selected.
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -157,6 +184,10 @@ public class HomeActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * The list of the items on the Fragments.
+     * @param item the list of the items.
+     */
     @Override
     public void onListFragmentInteraction(Question item) {
         QuestionPostFragment questionPostFragment = new QuestionPostFragment();
@@ -170,6 +201,10 @@ public class HomeActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * Add queston task.
+     * @param url the url received.
+     */
     @Override
     public void addQuestion(String url) {
         AddQuestionTask task = new AddQuestionTask();
@@ -178,15 +213,16 @@ public class HomeActivity extends AppCompatActivity implements
         getSupportFragmentManager().popBackStackImmediate();
     }
 
+
+    /**
+     * Store data by using web service.
+     */
     private class AddQuestionTask extends AsyncTask<String, Void, String> {
 
         /**
          * Override this method to perform a computation on a background thread. The
-         * specified parameters are the parameters passed to {@link #execute}
-         * by the caller of this task.
-         * <p/>
-         * This method can call {@link #publishProgress} to publish updates
-         * on the UI thread.
+         * specified parameters are the parameters passed to {@link #execute} by the caller of this task.
+         * This method can call {@link #publishProgress} to publish updates on the UI thread.
          *
          * @param urls The parameters of the task.
          * @return A result, defined by the subclass of this task.

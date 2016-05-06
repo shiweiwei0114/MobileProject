@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".QuestionAddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
