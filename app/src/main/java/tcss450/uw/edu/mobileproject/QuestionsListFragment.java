@@ -1,7 +1,7 @@
-/**
+/*
  * TCSS 450 - Mobile App Programming
- * May 5th, 2016
- * Weiwei Shi, Kyle Doan
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
  */
 package tcss450.uw.edu.mobileproject;
 
@@ -35,8 +35,8 @@ import tcss450.uw.edu.mobileproject.model.Question;
  * <p>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
- * @author KyleD, Weiwei
- * @version 1.0
+ * @author KyleD
+ * @version May 5, 2016
  */
 public class QuestionsListFragment extends Fragment {
 
@@ -56,6 +56,11 @@ public class QuestionsListFragment extends Fragment {
     public QuestionsListFragment() {
     }
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState contains the data it most recently supplied.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,14 @@ public class QuestionsListFragment extends Fragment {
         }
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,7 +115,11 @@ public class QuestionsListFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Called when a fragment is first attached to its context.
+     *
+     * @param context the Context will be attached.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -114,12 +131,18 @@ public class QuestionsListFragment extends Fragment {
         }
     }
 
+    /**
+     * Called when the fragment is no longer attached to its activity.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     * Retrieve data by using web service.
+     */
     private class DownloadQuestionsTask extends AsyncTask<String, Void, String> {
 
         /**
@@ -159,6 +182,13 @@ public class QuestionsListFragment extends Fragment {
             return response;
         }
 
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result display the result.
+         */
         @Override
         protected void onPostExecute(String result) {  // result will be exactly the response above
             // Something wrong with the network or the URL.

@@ -58,6 +58,11 @@ public class SignInActivity extends AppCompatActivity {
 
     public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,10 @@ public class SignInActivity extends AppCompatActivity {
         //setup listeners
         mSignInButton.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * mSignInButton onClickListener,send the data to the web server.
+             * @param v view
+             */
             @Override
             public void onClick(View v) {
 
@@ -123,6 +132,10 @@ public class SignInActivity extends AppCompatActivity {
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * mRegisterButton onClickListener, go to the RegistrationActivity.
+             * @param v view
+             */
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(SignInActivity.this, RegistrationActivity.class);
@@ -145,6 +158,12 @@ public class SignInActivity extends AppCompatActivity {
             mUser = email;
         }
 
+        /**
+         * Override this method to perform a computation on a background thread.
+         *
+         * @param urls receiving the web URLs.
+         * @return go to downloadUrl method.
+         */
         @Override
         protected String doInBackground(String... urls) {
 
@@ -202,8 +221,8 @@ public class SignInActivity extends AppCompatActivity {
         /**
          * Read an inputStream and convert it to a String.
          *
-         * @param stream
-         * @param len the length of the InputStream
+         * @param stream input stream
+         * @param len    the length of the InputStream
          * @return a string so that the activity can display it in the UI
          * @throws IOException
          * @throws UnsupportedEncodingException
@@ -216,6 +235,11 @@ public class SignInActivity extends AppCompatActivity {
             return new String(buffer);
         }
 
+        /**
+         * Runs on the UI thread.
+         *
+         * @param s the string passed in.
+         */
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);

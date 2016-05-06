@@ -1,12 +1,12 @@
-/**
+/*
  * TCSS 450 - Mobile App Programming
- * May 5th, 2016
- * Weiwei Shi, Kyle Doan
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
  */
+
 package tcss450.uw.edu.mobileproject;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -28,7 +28,8 @@ import java.net.URLEncoder;
  * to handle interaction events.
  * Use the {@link QuestionAddFragment#newInstance} factory method to
  * create an instance of this fragment.
- * @author KyleD, Weiwei
+ *
+ * @author KyleD
  * @version 1.0
  */
 public class QuestionAddFragment extends Fragment {
@@ -44,8 +45,11 @@ public class QuestionAddFragment extends Fragment {
     private EditText mQuestCompanyEditText;
     private EditText mQuestTags;
 
+    /**
+     * Required empty public constructor
+     */
     public QuestionAddFragment() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -56,7 +60,6 @@ public class QuestionAddFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment QuestionAddFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static QuestionAddFragment newInstance(String param1, String param2) {
         QuestionAddFragment fragment = new QuestionAddFragment();
         Bundle args = new Bundle();
@@ -64,6 +67,11 @@ public class QuestionAddFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState contains the data it most recently supplied.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +80,14 @@ public class QuestionAddFragment extends Fragment {
         }
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,10 +113,21 @@ public class QuestionAddFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Set Email.
+     *
+     * @param email email
+     */
     public void setUserEmail(String email) {
         mUserEmail = email;
     }
 
+    /**
+     * Build the Url.
+     *
+     * @param v the user input EditText
+     * @return the Url.
+     */
     private String buildQuestURL(View v) {
         StringBuilder sb = new StringBuilder(QUESTION_ADD_URL);
         try {
@@ -129,13 +156,23 @@ public class QuestionAddFragment extends Fragment {
         return sb.toString();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
+    /**
+     * Button Pressed, then add the question.
+     *
+     * @param url the url
+     */
     public void onButtonPressed(String url) {
         if (mListener != null) {
             mListener.addQuestion(url);
         }
     }
 
+    /**
+     * Called when a fragment is first attached to its context.
+     *
+     * @param context the Context will be attached.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -147,6 +184,9 @@ public class QuestionAddFragment extends Fragment {
         }
     }
 
+    /**
+     * Called when the fragment is no longer attached to its activity.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -158,7 +198,7 @@ public class QuestionAddFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
