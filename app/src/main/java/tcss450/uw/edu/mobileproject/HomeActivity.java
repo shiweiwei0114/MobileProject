@@ -208,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     public void addQuestion(String url) {
         AddQuestionTask task = new AddQuestionTask();
-        task.execute(new String[]{url.toString()});
+        task.execute(url);
         // Takes you back to the previous fragment by popping the current fragment out.
         getSupportFragmentManager().popBackStackImmediate();
     }
@@ -250,7 +250,7 @@ public class HomeActivity extends AppCompatActivity implements
                     response = "Unable to add question, Reason: " + e.getMessage();
                 } finally {
                     if (urlConnection != null)
-                        urlConnection.disconnect();;
+                        urlConnection.disconnect();
                 }
             }
             return response;
@@ -261,7 +261,7 @@ public class HomeActivity extends AppCompatActivity implements
          * exception is caught. It tries to call the parse Method and checks to see if it was successful.
          * If not, it displays the exception.
          *
-         * @param result, display the result
+         * @param result the string in echo from php file.
          */
         @Override
         protected void onPostExecute(String result) {
@@ -273,10 +273,12 @@ public class HomeActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "Question successfully added!",
                             Toast.LENGTH_LONG).show();
                 } else {
+                    Log.i(LOG, jsonObject.get("error").toString());
                     Toast.makeText(getApplicationContext(), "Failed to add: "
                             + jsonObject.get("error"), Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
+                Log.i(LOG, e.getMessage());
                 Toast.makeText(getApplicationContext(), "Something wrong with the data "
                         + e.getMessage(), Toast.LENGTH_LONG).show();
             }
