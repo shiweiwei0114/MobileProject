@@ -1,8 +1,9 @@
-/**
+/*
  * TCSS 450 - Mobile App Programming
- * May 5th, 2016
- * Weiwei Shi, Kyle Doan
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.0
  */
+
 package tcss450.uw.edu.mobileproject.model;
 
 import org.json.JSONArray;
@@ -16,7 +17,7 @@ import java.util.List;
  * The content of the question.
  *
  * @author KyleD, Weiwei
- * @version 1.0
+ * @version May 5, 2016
  */
 public class Question implements Serializable {
 
@@ -30,39 +31,63 @@ public class Question implements Serializable {
     private String mQuestDetail;
     private String mUserEmail;
     private String mCompany;
-//    private List<String> mTags;
+
     private String mQuestDatePost;
 
-    public Question(String id, String email, String now,
-                    String questDetail, String company) {
-        mQuestId = id;
-        mUserEmail = email;
-        mQuestDatePost = now;
-        mQuestDetail = questDetail;
-        mCompany = company;
-//        mTags = new LinkedList<>();
+    /**
+     * Constructor
+     * @param theId the id
+     * @param theEmail the email
+     * @param theNow the date and time
+     * @param theQuestDetail the question details
+     * @param theCompany the company names
+     */
+    public Question(String theId, String theEmail, String theNow,
+                    String theQuestDetail, String theCompany) {
+        mQuestId = theId;
+        mUserEmail = theEmail;
+        mQuestDatePost = theNow;
+        mQuestDetail = theQuestDetail;
+        mCompany = theCompany;
     }
 
+    /**
+     * Get Id.
+     * @return the Id.
+     */
     public String getId() {
         return mQuestId;
     }
 
+    /**
+     * Get Question Detail.
+     * @return question detail.
+     */
     public String getQuestDetail() {
         return mQuestDetail;
     }
 
+    /**
+     * Get Question post date.
+     * @return question post date.
+     */
     public String getQuestDatePost() {
         return mQuestDatePost;
     }
 
+    /**
+     * Get the usr Email.
+     * @return the user email.
+     */
     public String getUser() {
         return mUserEmail;
     }
 
-//    public List<String> getTags() {
-//        return new LinkedList<>(mTags);
-//    }
 
+    /**
+     * Get the company name.
+     * @return the company name.
+     */
     public String getCompany() {
         return mCompany;
     }
@@ -70,8 +95,8 @@ public class Question implements Serializable {
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns question list if success.
-     * @param questJSON
-     * @param questsList
+     * @param questJSON JSAON file
+     * @param questsList a list
      * @return reason or null if successful.
      */
     public static String parseQuestionJSON(String questJSON, List<Question> questsList) {

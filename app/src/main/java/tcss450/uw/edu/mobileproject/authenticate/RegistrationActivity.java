@@ -3,7 +3,6 @@
  * @author Weiwei Shi, Kyle Doan
  * @version 1.0
  */
-//testing
 
 package tcss450.uw.edu.mobileproject.authenticate;
 
@@ -51,6 +50,10 @@ public class RegistrationActivity extends AppCompatActivity {
     private String url = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
 
 
+    /**
+     * Called when the activity is starting.
+     * @param savedInstanceState contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * mRegisterButton onClickListener,send the data to the web server.
+             * @param v view.
+             */
             @Override
             public void onClick(View v) {
                 if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0) {
@@ -76,6 +83,10 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         mBackToLogInButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * mBackToLogInButton onClickListener, go back to SignInActivity.
+             * @param v view
+             */
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(RegistrationActivity.this, SignInActivity.class);
@@ -85,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     /**
-     * Retrieve data by using web service.
+     * Store data by using web service.
      * Network connection credits: http://developer.android.com/training/basics/network-ops/connecting.html
      */
     private class RegistrationTask extends AsyncTask<String, Void, String> {
@@ -98,6 +109,12 @@ public class RegistrationActivity extends AppCompatActivity {
             mUser = user;
         }
 
+        /**
+         * Override this method to perform a computation on a background thread.
+         *
+         * @param urls receiving the web URLs.
+         * @return go to downloadUrl method.
+         */
         @Override
         protected String doInBackground(String... urls) {
             try {
@@ -154,11 +171,11 @@ public class RegistrationActivity extends AppCompatActivity {
         /**
          * Read an inputStream and convert it to a String.
          *
-         * @param stream
-         * @param len the length of the InputStream
+         * @param stream the inputstream
+         * @param len    the length of the InputStream
          * @return a string so that the activity can display it in the UI
          * @throws IOException
-         * @throws UnsupportedEncodingException
+         * @throws UnsupportedEncodingException throw exception
          */
         public String convert(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
             Reader reader = null;
@@ -168,6 +185,11 @@ public class RegistrationActivity extends AppCompatActivity {
             return new String(buffer);
         }
 
+        /**
+         * Runs on the UI thread.
+         *
+         * @param s the string passed in.
+         */
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
