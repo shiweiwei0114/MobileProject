@@ -1,6 +1,6 @@
 README FILE
 
-Product Name: Proterview
+Product Name: ProterView
 Type:     Android Mobile App
 Authors: Weiwei Shi, Kyle Doan
 Date: May 4, 2016 Version 1.0
