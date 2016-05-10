@@ -118,9 +118,9 @@ public class QuestionPostFragment extends Fragment {
         mQuestCompanyTextView = (TextView) view.findViewById(R.id.question_company);
         // Inflate the layout for this fragment
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getActivity().findViewById(R.id.add_question);
-        floatingActionButton.show();
+//        FloatingActionButton floatingActionButton = (FloatingActionButton)
+//                getActivity().findViewById(R.id.add_question);
+//        floatingActionButton.show();
         return view;
     }
 

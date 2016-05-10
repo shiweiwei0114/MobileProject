@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_question);
         if (fab != null) {
+            fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
 
                 /**

@@ -7,15 +7,17 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-
+    <string name="questions">Questions</string>
     <string name="question_detail_hint">Enter Question Detail</string>
     <string name="question_company">Which company ask the question?</string>
     <string name="question_tags">Tags (Ex: Algorithm, Database, etc.)</string>
     <string name="question_add_button">add question</string>
+    <string name="reply">Reply</string>
 
     <!--Log in page string -->
-    <string name="email_hint">Email</string>
-    <string name="psw_hint">Password</string>
+    <string name="email_hint">Enter Email</string>
+    <string name="psw_hint">Enter Password</string>
+    <string name="psw_confirm_hint">Re-Enter Password</string>
     <string name="login_text">Log In</string>
     <string name="link_to_register">New to Proterview? Register here.</string>
 
