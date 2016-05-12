@@ -27,6 +27,8 @@ public class Question implements Serializable {
                     COMPANY = "Company",
                     DATE = "DatePost";
 
+    public static final String TAG_NAME = "TagName";
+
     private String mQuestId;
     private String mQuestDetail;
     private String mUserEmail;
@@ -106,15 +108,32 @@ public class Question implements Serializable {
                 JSONArray arr = new JSONArray(questJSON);
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    Question course = new Question(obj.getString(Question.ID),
+                    Question quest = new Question(obj.getString(Question.ID),
                             obj.getString(Question.EMAIL),
                             obj.getString(Question.DATE),
                             obj.getString(Question.DETAIL),
                             obj.getString(Question.COMPANY));
-                    questsList.add(course);
+                    questsList.add(quest);
                 }
             } catch (JSONException e) {
-                reason = "Unable to parse data, Reason: " + e.getMessage();
+                reason = "Unable to parse question data, Reason: " + e.getMessage();
+            }
+        }
+        return reason;
+    }
+
+    public static String parseTagsQuestionJSON(String tagJSON, List<String> tags) {
+        String reason = null;
+        if (tagJSON != null) {
+            try {
+                JSONArray arr = new JSONArray(tagJSON);
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject obj = arr.getJSONObject(i);
+                    String tag = obj.getString(Question.TAG_NAME);
+                    tags.add(tag);
+                }
+            } catch (JSONException e) {
+                reason = "Unable to parse tags data, Reason: " + e.getMessage();
             }
         }
         return reason;

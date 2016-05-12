@@ -6,25 +6,57 @@
     tools:context=".QuestionPostFragment"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_detail" />
+        android:orientation="horizontal"
+        android:weightSum="11" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/question_user_post" />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:id="@+id/question_company" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/question_date_post" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:orientation="vertical" >
 
-    <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/question_user_post" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/question_detail" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/question_date_post" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tags_containter"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_company" />
+        android:id="@+id/ans_container"
+        android:orientation="vertical" >
+
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -35,17 +67,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
             android:layout_weight="1"
             android:layout_margin="0dp"
-            android:layout_height="match_parent" />
+            android:id="@+id/ans_text"
+            android:hint="@string/reply" />
         <Button
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_gravity="end"
+            android:id="@+id/ans_btn"
             android:paddingBottom="0dp"
-            android:layout_margin="0dp"
+            android:paddingTop="0dp"
+            android:onClick="addAnswer"
             android:text="@string/reply"/>
     </LinearLayout>
 

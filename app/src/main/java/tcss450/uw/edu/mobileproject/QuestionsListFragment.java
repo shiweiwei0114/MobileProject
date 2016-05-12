@@ -98,9 +98,9 @@ public class QuestionsListFragment extends Fragment {
 //            recyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(QuestionContent.ITEMS, mListener));
         }
 
-//        FloatingActionButton floatingActionButton = (FloatingActionButton)
-//                getActivity().findViewById(R.id.add_question);
-//        floatingActionButton.show();
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.add_question);
+        floatingActionButton.show();
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
