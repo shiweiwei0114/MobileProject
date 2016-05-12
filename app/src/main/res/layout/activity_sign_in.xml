@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_login"
+    android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
     android:id="@+id/fragment_container"
-    tools:context="tcss450.uw.edu.mobileproject.authenticate.SignInActivity"
-    android:transitionGroup="false"
-    android:touchscreenBlocksFocus="false">
+    tools:context="tcss450.uw.edu.mobileproject.authenticate.SignInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

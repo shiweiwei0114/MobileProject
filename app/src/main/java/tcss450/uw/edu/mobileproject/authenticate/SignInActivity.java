@@ -6,14 +6,20 @@
 
 package tcss450.uw.edu.mobileproject.authenticate;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -68,6 +74,15 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        // change color for navigation bar and status bar
+        Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
+        }
+
         //setup input fields
         mEmailText = (EditText) findViewById(R.id.login_email);
         mPwdText = (EditText) findViewById(R.id.login_psw);
@@ -88,7 +103,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String userId = mEmailText.getText().toString();
+                final String userId = mEmailText.getText().toString().trim().toLowerCase();
                 String pwd = mPwdText.getText().toString();
                 if (TextUtils.isEmpty(userId)) {
                     Toast.makeText(v.getContext(), "Enter userid"
@@ -225,11 +240,9 @@ public class SignInActivity extends AppCompatActivity {
          * @param len    the length of the InputStream
          * @return a string so that the activity can display it in the UI
          * @throws IOException
-         * @throws UnsupportedEncodingException
          */
-        public String convert(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-            Reader reader = null;
-            reader = new InputStreamReader(stream, "UTF-8");
+        public String convert(InputStream stream, int len) throws IOException {
+            Reader reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);
             return new String(buffer);
