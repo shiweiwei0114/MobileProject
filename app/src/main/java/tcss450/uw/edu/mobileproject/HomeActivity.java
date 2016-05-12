@@ -193,7 +193,6 @@ public class HomeActivity extends AppCompatActivity implements
     public void onListFragmentInteraction(Question item) {
         QuestionPostFragment questionPostFragment = new QuestionPostFragment();
         Bundle args = new Bundle();
-        args.putString(QuestionPostFragment.USER, mUserEmail);
         args.putSerializable(QuestionPostFragment.QUEST_SELECTED, item);
         questionPostFragment.setArguments(args);
         getSupportFragmentManager()

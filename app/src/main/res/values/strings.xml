@@ -2,7 +2,7 @@
     <string name="app_name">Proterview</string>
     <string name="about_us">About Us</string>
 
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Questions</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
