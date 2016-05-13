@@ -194,6 +194,7 @@ public class HomeActivity extends AppCompatActivity implements
         QuestionPostFragment questionPostFragment = new QuestionPostFragment();
         Bundle args = new Bundle();
         args.putSerializable(QuestionPostFragment.QUEST_SELECTED, item);
+        args.putString(QuestionPostFragment.USER, mUserEmail);
         questionPostFragment.setArguments(args);
         getSupportFragmentManager()
                 .beginTransaction()
