@@ -313,7 +313,6 @@ public class QuestionPostFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        // TODO save current content in EditText and recover it in on Resume
     }
 
     private String buildAnswerURL() {

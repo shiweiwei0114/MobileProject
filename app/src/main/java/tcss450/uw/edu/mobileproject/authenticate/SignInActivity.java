@@ -6,15 +6,12 @@
 
 package tcss450.uw.edu.mobileproject.authenticate;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -106,7 +102,7 @@ public class SignInActivity extends AppCompatActivity {
                 final String userId = mEmailText.getText().toString().trim().toLowerCase();
                 String pwd = mPwdText.getText().toString();
                 if (TextUtils.isEmpty(userId)) {
-                    Toast.makeText(v.getContext(), "Enter userid"
+                    Toast.makeText(v.getContext(), "Enter your email"
                             , Toast.LENGTH_SHORT)
                             .show();
                     mEmailText.requestFocus();
