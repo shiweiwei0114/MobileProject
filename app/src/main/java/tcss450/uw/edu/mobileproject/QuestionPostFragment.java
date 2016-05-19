@@ -5,6 +5,7 @@
  */
 package tcss450.uw.edu.mobileproject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -20,6 +21,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -155,7 +157,6 @@ public class QuestionPostFragment extends Fragment {
             DownloadAnswersTask ansTask = new DownloadAnswersTask();
             String questTag = TAG_URL + "&questID=" + quest.getId();
             String ansUrl = ANS_URL + "&questID=" + quest.getId();
-            Log.i(LOG, ansUrl);
             task.execute(questTag);
             ansTask.execute(ansUrl);
         } else {
@@ -164,19 +165,21 @@ public class QuestionPostFragment extends Fragment {
     }
 
     private void setTagsView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 0, 15, 0);  // left, top, right, bottom
-        for (int i = 0; i < mTags.size(); i++) {
-            TextView tagView = new TextView(this.getActivity());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                tagView.setBackground(getResources().getDrawable(R.drawable.round_rect, null));
+        if (mTagsContainer.getChildCount() == 0) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, 15, 0);  // left, top, right, bottom
+            for (int i = 0; i < mTags.size(); i++) {
+                TextView tagView = new TextView(this.getActivity());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    tagView.setBackground(getResources().getDrawable(R.drawable.round_rect, null));
+                }
+                tagView.setLayoutParams(params);
+                tagView.setText(mTags.get(i));
+                mTagsContainer.addView(tagView);
             }
-            tagView.setLayoutParams(params);
-            tagView.setText(mTags.get(i));
-            mTagsContainer.addView(tagView);
         }
     }
 
@@ -272,9 +275,15 @@ public class QuestionPostFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
+                Activity act = getActivity();
+                InputMethodManager inputManager =
+                        (InputMethodManager) act.getSystemService(act.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 String url = buildAnswerURL();
                 AddAnswerTask task = new AddAnswerTask();
                 task.execute(url);
+                mAnsEditText.setText(null);
             }
         });
         FloatingActionButton floatingActionButton = (FloatingActionButton)
