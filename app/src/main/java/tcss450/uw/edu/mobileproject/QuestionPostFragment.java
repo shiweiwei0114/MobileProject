@@ -283,7 +283,6 @@ public class QuestionPostFragment extends Fragment {
                 String url = buildAnswerURL();
                 AddAnswerTask task = new AddAnswerTask();
                 task.execute(url);
-                mAnsEditText.setText(null);
             }
         });
         FloatingActionButton floatingActionButton = (FloatingActionButton)
@@ -581,6 +580,7 @@ public class QuestionPostFragment extends Fragment {
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
                     addRecentAnswer();
+                    mAnsEditText.setText(null);
                     Toast.makeText(getContext(), "Answer successfully added!",
                             Toast.LENGTH_LONG).show();
                 } else {

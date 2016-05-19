@@ -27,4 +27,9 @@
 
     <!--Log out -->
     <string name="action_logout">Log Out</string>
+
+    <!--Offline Data -->
+    <string name="LOGIN_PREFS">tcss450.uw.edu.mobileproject.PREFS</string>
+    <string name="LOGGEDIN">loggedin</string>
+    <string name="USER">user</string>
 </resources>

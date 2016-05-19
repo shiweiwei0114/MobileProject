@@ -6,11 +6,16 @@
 
 package tcss450.uw.edu.mobileproject.authenticate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +33,7 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import tcss450.uw.edu.mobileproject.HomeActivity;
 import tcss450.uw.edu.mobileproject.R;
@@ -44,13 +50,15 @@ public class RegistrationActivity extends AppCompatActivity {
     //variables
     private EditText mEmailText;
     private EditText mPwdText;
+    private EditText mConfirmPwText;
 
     private Button mRegisterButton;
     private Button mBackToLogInButton;
 
-    public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
 
-    private String url = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
+    public static final String USER_EMAIL = "tcss450.uw.edu.mobileproject.EMAIL";
+
+    private static final String REGISTER_URL = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
 
 
     /**
@@ -73,6 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mEmailText = (EditText) findViewById(R.id.reg_email);
         mPwdText = (EditText) findViewById(R.id.reg_psw);
+        mConfirmPwText = (EditText) findViewById(R.id.reg_confirm_psw);
 
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mBackToLogInButton = (Button) findViewById(R.id.linkTo_login_button);
@@ -85,8 +94,56 @@ public class RegistrationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View v) {
+                final String userId = mEmailText.getText().toString().trim().toLowerCase();
+                String pwd = mPwdText.getText().toString();
+                String confirmPw = mConfirmPwText.getText().toString();
+                if (TextUtils.isEmpty(userId)) {
+                    Toast.makeText(v.getContext(), "Enter userid"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mEmailText.requestFocus();
+                    return;
+                }
+                if (!userId.contains("@")) {
+                    Toast.makeText(v.getContext(), "Enter a valid email address"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mEmailText.requestFocus();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(pwd)) {
+                    Toast.makeText(v.getContext(), "Enter password"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mPwdText.requestFocus();
+                    return;
+                }
+                if (pwd.length() < 6) {
+                    Toast.makeText(v.getContext(), "Enter password of at least 6 characters"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mPwdText.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(confirmPw)) {
+                    Toast.makeText(v.getContext(), "Enter confirm password"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mConfirmPwText.requestFocus();
+                    return;
+                }
+                if (!confirmPw.equals(pwd)) {
+                    Toast.makeText(v.getContext(), "Confirm password does not match"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    mConfirmPwText.requestFocus();
+                    return;
+                }
                 if (mEmailText.getText().length() != 0 && mPwdText.getText().length() != 0) {
-                    url += "?email=" + mEmailText.getText().toString() + "&pwd=" + mPwdText.getText().toString();
+                    String url = buildUserURL(userId, pwd.hashCode());
+                    url += "?email=" + mEmailText.getText().toString() +
+                            "&pwd=" + mPwdText.getText().toString().hashCode();
                     RegistrationTask task = new RegistrationTask();
                     task.setUser(mEmailText.getText().toString());
                     task.execute(url);
@@ -101,12 +158,37 @@ public class RegistrationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(RegistrationActivity.this, SignInActivity.class);
-//                startActivity(i);
                 // Prevent over stack from user when keep switching login and registration screen
+                Intent i = new Intent(RegistrationActivity.this, SignInActivity.class);
+                startActivity(i);
                 finish();
             }
         });
+    }
+
+    /**
+     * Called when the activity has detected the user's press of the back key.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(RegistrationActivity.this, SignInActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private String buildUserURL(String email, int passEncrypted) {
+        StringBuilder sb = new StringBuilder(REGISTER_URL);
+        try {
+            sb.append("?email=");
+            sb.append(URLEncoder.encode(email, "UTF-8"));
+
+            sb.append("&pwd=");
+            sb.append(URLEncoder.encode(String.valueOf(passEncrypted), "UTF-8"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Something wrong with the url " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
     }
 
     /**
@@ -214,6 +296,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Successfully created a new account!",
                             Toast.LENGTH_SHORT)
                             .show();
+                    SharedPreferences sharedPreferences =
+                            getSharedPreferences(getString(R.string.LOGIN_PREFS),
+                            Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), true).apply();
+                    sharedPreferences.edit().putString(getString(R.string.USER), mUser).apply();
                     Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                     intent.putExtra(USER_EMAIL, mUser);
                     startActivity(intent);

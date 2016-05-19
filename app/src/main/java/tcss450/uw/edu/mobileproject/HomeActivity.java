@@ -6,7 +6,9 @@
 
 package tcss450.uw.edu.mobileproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -47,11 +49,14 @@ public class HomeActivity extends AppCompatActivity implements
 
     private final static String LOG = "HomeActivity";
 
-    /** user email to transfer to other fragment. */
+    /**
+     * user email to transfer to other fragment.
+     */
     private String mUserEmail;
 
     /**
      * Called when the activity is starting.
+     *
      * @param savedInstanceState contains the data it most recently supplied.
      */
     @Override
@@ -120,6 +125,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     /**
      * Called when a context menu for the view is about to be shown.
+     *
      * @param menu The context menu that is being built.
      * @return return true if it has options
      */
@@ -132,6 +138,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     /**
      * Called whenever an item in your options menu is selected.
+     *
      * @param item the menu item that was selected.
      * @return return true if has item.
      */
@@ -148,6 +155,10 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
         if (id == R.id.action_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
+                    Context.MODE_PRIVATE);
+            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false).apply();
+            sharedPreferences.edit().putString(getString(R.string.USER), null).apply();
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
             finish();
@@ -159,6 +170,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     /**
      * Called whenever a navigation item in the action bar is selected.
+     *
      * @param item is selected.
      * @return true if the item is selected.
      */
@@ -187,6 +199,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     /**
      * The list of the items on the Fragments.
+     *
      * @param item the list of the items.
      */
     @Override
@@ -205,6 +218,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     /**
      * Add queston task.
+     *
      * @param url the url received.
      */
     @Override

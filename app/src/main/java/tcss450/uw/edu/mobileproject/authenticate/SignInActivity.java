@@ -6,15 +6,14 @@
 
 package tcss450.uw.edu.mobileproject.authenticate;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +32,7 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import tcss450.uw.edu.mobileproject.HomeActivity;
 import tcss450.uw.edu.mobileproject.R;
@@ -52,15 +52,16 @@ public class SignInActivity extends AppCompatActivity {
     private Button mSignInButton;
     private Button mRegisterButton;
 
-    private String url = "http://cssgate.insttech.washington.edu/~_450btm7/login.php";
+    private final static String LOGIN_URL = "http://cssgate.insttech.washington.edu/~_450btm7/login.php";
 
     //Progress Dialog
     private ProgressDialog mDialog;
+    private SharedPreferences mSharedPreferences;
 
     //Constant
     //JSON element ids from response of php script
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
+    private static final String TAG_MESSAGE = "SignInActivity";
 
     public static final String USER_EMAIL = "tcss450.uw.edu.mobile.EMAIL";
 
@@ -74,89 +75,102 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        // change color for navigation bar and status bar
-        Window window = getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
+        mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
+                Context.MODE_PRIVATE);
+        if (!mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+            // change color for navigation bar and status bar
+            Window window = getWindow();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
+                window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark, null));
+            }
+
+            //setup input fields
+            mEmailText = (EditText) findViewById(R.id.login_email);
+            mPwdText = (EditText) findViewById(R.id.login_psw);
+
+            //setup buttons
+            mSignInButton = (Button) findViewById(R.id.login_button);
+            mRegisterButton = (Button) findViewById(R.id.linkTo_register_button);
+
+            mDialog = new ProgressDialog(SignInActivity.this);
+
+            //setup listeners
+            mSignInButton.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * mSignInButton onClickListener,send the data to the web server.
+                 * @param v view
+                 */
+                @Override
+                public void onClick(View v) {
+
+                    final String userId = mEmailText.getText().toString().trim().toLowerCase();
+                    String pwd = mPwdText.getText().toString();
+                    if (TextUtils.isEmpty(userId)) {
+                        Toast.makeText(v.getContext(), "Enter userid"
+                                , Toast.LENGTH_SHORT)
+                                .show();
+                        mEmailText.requestFocus();
+                        return;
+                    }
+                    if (TextUtils.isEmpty(pwd)) {
+                        Toast.makeText(v.getContext(), "Enter password"
+                                , Toast.LENGTH_SHORT)
+                                .show();
+                        mPwdText.requestFocus();
+                        return;
+                    }
+
+                    if (userId.length() != 0 && pwd.length() != 0) {
+                        String url = buildSignInURL(userId, pwd.hashCode());
+                        LogInTask login = new LogInTask();
+                        login.setUserId(userId);
+                        login.execute(url);
+                        return;
+                    }
+                }
+            });
+
+            mRegisterButton.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * mRegisterButton onClickListener, go to the RegistrationActivity.
+                 * @param v view
+                 */
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SignInActivity.this, RegistrationActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+        } else {
+            Intent i = new Intent(this, HomeActivity.class);
+            String user;
+            user = mSharedPreferences.getString(getString(R.string.USER), null);
+            i.putExtra(USER_EMAIL, user);
+            startActivity(i);
+            finish();
         }
 
-        //setup input fields
-        mEmailText = (EditText) findViewById(R.id.login_email);
-        mPwdText = (EditText) findViewById(R.id.login_psw);
+    }
 
-        //setup buttons
-        mSignInButton = (Button) findViewById(R.id.login_button);
-        mRegisterButton = (Button) findViewById(R.id.linkTo_register_button);
+    private String buildSignInURL(String email, int passEncrypted) {
+        StringBuilder sb = new StringBuilder(LOGIN_URL);
+        try {
+            sb.append("?email=");
+            sb.append(URLEncoder.encode(email, "UTF-8"));
 
-        mDialog = new ProgressDialog(SignInActivity.this);
-
-        //setup listeners
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
-
-            /**
-             * mSignInButton onClickListener,send the data to the web server.
-             * @param v view
-             */
-            @Override
-            public void onClick(View v) {
-
-                final String userId = mEmailText.getText().toString().trim().toLowerCase();
-                String pwd = mPwdText.getText().toString();
-                if (TextUtils.isEmpty(userId)) {
-                    Toast.makeText(v.getContext(), "Enter userid"
-                            , Toast.LENGTH_SHORT)
-                            .show();
-                    mEmailText.requestFocus();
-                    return;
-                }
-                if (!userId.contains("@")) {
-                    Toast.makeText(v.getContext(), "Enter a valid email address"
-                            , Toast.LENGTH_SHORT)
-                            .show();
-                    mEmailText.requestFocus();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(pwd)) {
-                    Toast.makeText(v.getContext(), "Enter password"
-                            , Toast.LENGTH_SHORT)
-                            .show();
-                    mPwdText.requestFocus();
-                    return;
-                }
-                if (pwd.length() < 6) {
-                    Toast.makeText(v.getContext(), "Enter password of at least 6 characters"
-                            , Toast.LENGTH_SHORT)
-                            .show();
-                    mPwdText.requestFocus();
-                    return;
-                }
-
-                if (userId.length() != 0 && pwd.length() != 0) {
-                    url += "?email=" + userId + "&pwd=" + pwd;
-                    LogInTask login = new LogInTask();
-                    login.setUserId(userId);
-                    login.execute(url);
-                    return;
-                }
-            }
-        });
-
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-
-            /**
-             * mRegisterButton onClickListener, go to the RegistrationActivity.
-             * @param v view
-             */
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this, RegistrationActivity.class);
-                startActivity(i);
-            }
-        });
+            sb.append("&pwd=");
+            sb.append(URLEncoder.encode(String.valueOf(passEncrypted), "UTF-8"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Something wrong with the url " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
     }
 
     /**
@@ -267,13 +281,18 @@ public class SignInActivity extends AppCompatActivity {
 
                     Toast.makeText(SignInActivity.this, "Successfully log in...",
                             Toast.LENGTH_SHORT).show();
+                    mSharedPreferences.edit()
+                            .putBoolean(getString(R.string.LOGGEDIN), true)
+                            .apply();
+                    mSharedPreferences.edit()
+                            .putString(getString(R.string.USER), mUser)
+                            .apply();
                     Intent myIntent = new Intent(SignInActivity.this, HomeActivity.class);
                     myIntent.putExtra(USER_EMAIL, mUser);
                     finish();
                     startActivity(myIntent);
                     hideDialog();
                 } else {
-
                     String reason = jsonObject.getString("error");
                     Toast.makeText(SignInActivity.this, "Failed :" + reason,
                             Toast.LENGTH_SHORT)
