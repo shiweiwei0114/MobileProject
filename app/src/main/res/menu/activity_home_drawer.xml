@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item android:title="Question Category"
+              android:icon="@drawable/ic_menu_black_24dp">
+            <menu>
+                <item
+                    android:id="@+id/nav_Java"
+                    android:title="Java" />
+                <item
+                    android:id="@+id/nav_SQL"
+                    android:title="SQL" />
+                <item
+                    android:id="@+id/nav_DataStructure"
+                    android:title="Data Structure" />
+                <item
+                    android:id="@+id/nav_Algorithm"
+                    android:title="Algorithm"/>
+                <item
+                    android:id="@+id/nav_Other"
+                    android:title="Other" />
+            </menu>
+        </item>
     </group>
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_border_color_black_24dp"
+        android:title="Add a question" />
+    <item
+        android:id="@+id/nav_aboutUs"
+        android:icon="@drawable/ic_mood_black_24dp"
+        android:title="About us" />
+    <item
+        android:id="@+id/nav_logOut"
+        android:icon="@drawable/ic_directions_run_black_24dp"
+        android:title="Log Out" />
+
 </menu>

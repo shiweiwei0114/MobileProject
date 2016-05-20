@@ -12,16 +12,18 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -53,6 +55,9 @@ public class HomeActivity extends AppCompatActivity implements
      * user email to transfer to other fragment.
      */
     private String mUserEmail;
+    private QuestionsListFragment questListFragment;
+
+    private ShareActionProvider mShareActionProvider;
 
     /**
      * Called when the activity is starting.
@@ -133,8 +138,10 @@ public class HomeActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
         return true;
     }
+
 
     /**
      * Called whenever an item in your options menu is selected.
@@ -150,7 +157,16 @@ public class HomeActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_item_share) {
+            //mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+            //SharedPreferences questionPrefs = getPreferences(QuestionPostFragment.QUEST_SELECTED, 0);
+            Log.d("TAG","whatever");
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this interview question!" + "question");
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Share via"));
+           // startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
             return true;
         }
 
@@ -180,16 +196,22 @@ public class HomeActivity extends AppCompatActivity implements
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_Java) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            //questListFragment.changeList();
+        } else if (id == R.id.nav_SQL) {
 
-        } else if (id == R.id.nav_slideshow) {
+        }  else if (id == R.id.nav_add) {
+            QuestionAddFragment questionAddFragment = new QuestionAddFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
+        } else if (id == R.id.nav_aboutUs) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_logOut) {
+            Intent i = new Intent(this, SignInActivity.class);
+            startActivity(i);
+            finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);

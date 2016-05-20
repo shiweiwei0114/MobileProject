@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Proterview</string>
     <string name="about_us">About Us</string>
+    <string name="share">Share</string>
 
     <string name="title_activity_home">Questions</string>
 
@@ -32,4 +33,7 @@
     <string name="LOGIN_PREFS">tcss450.uw.edu.mobileproject.PREFS</string>
     <string name="LOGGEDIN">loggedin</string>
     <string name="USER">user</string>
+
+    <!-- Share feature -->
+    <string name="send_to">Share the question via...</string>
 </resources>
