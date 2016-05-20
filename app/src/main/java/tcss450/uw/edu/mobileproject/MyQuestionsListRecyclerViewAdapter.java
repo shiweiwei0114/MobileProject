@@ -30,7 +30,8 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
      * List of questions.
      */
     private final List<Question> mValues;
-
+    // mValues display all the list
+    // TODO have another alter list to display some specific list.
     /**
      * Listener for callback.
      */

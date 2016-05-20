@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_questionCategory"
-            android:icon="@drawable/ic_menu_black_24dp"
-            android:title="Question Category" />
-        <item
-            android:id="@+id/nav_company"
-            android:icon="@drawable/ic_domain_black_24dp"
-            android:title="Company" />
-        <item
-            android:id="@+id/nav_add"
-            android:icon="@drawable/ic_border_color_black_24dp"
-            android:title="Add a question" />
-        <item
-            android:id="@+id/nav_aboutUs"
-            android:icon="@drawable/ic_mood_black_24dp"
-            android:title="About us" />
+        <item android:title="Question Category"
+              android:icon="@drawable/ic_menu_black_24dp">
+            <menu>
+                <item
+                    android:id="@+id/nav_Java"
+                    android:title="Java" />
+                <item
+                    android:id="@+id/nav_SQL"
+                    android:title="SQL" />
+                <item
+                    android:id="@+id/nav_DataStructure"
+                    android:title="Data Structure" />
+                <item
+                    android:id="@+id/nav_Algorithm"
+                    android:title="Algorithm"/>
+                <item
+                    android:id="@+id/nav_Other"
+                    android:title="Other" />
+            </menu>
+        </item>
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share"
-                />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send"
-                />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_border_color_black_24dp"
+        android:title="Add a question" />
+    <item
+        android:id="@+id/nav_aboutUs"
+        android:icon="@drawable/ic_mood_black_24dp"
+        android:title="About us" />
+    <item
+        android:id="@+id/nav_logOut"
+        android:icon="@drawable/ic_directions_run_black_24dp"
+        android:title="Log Out" />
+
 </menu>
