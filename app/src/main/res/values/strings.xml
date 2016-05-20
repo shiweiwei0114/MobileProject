@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Proterview</string>
     <string name="about_us">About Us</string>
+    <string name="share">Share</string>
 
     <string name="title_activity_home">Questions</string>
 
@@ -27,4 +28,7 @@
 
     <!--Log out -->
     <string name="action_logout">Log Out</string>
+
+    <!-- Share feature -->
+    <string name="send_to">Share the question via...</string>
 </resources>

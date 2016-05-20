@@ -48,7 +48,8 @@ public class QuestionsListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
-    private List<Question> mQuestsList;
+    private List<Question> mQuestsList; // try to keep this one unchanged after download
+    // mDisplayList is copy of the mQuestList and can be modified after user hitting some tags
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,6 +70,10 @@ public class QuestionsListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+    }
+
+    public void changeList(String tag) {
+
     }
 
     /**
