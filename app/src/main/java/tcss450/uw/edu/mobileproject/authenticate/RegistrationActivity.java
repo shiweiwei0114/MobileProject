@@ -9,6 +9,7 @@ package tcss450.uw.edu.mobileproject.authenticate;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -69,6 +71,10 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        TextView logo = (TextView) findViewById(R.id.logo);
+        Typeface logoFont = Typeface.createFromAsset(getAssets(), "fonts/Lobster-Regular.ttf");
+        if (logo != null) logo.setTypeface(logoFont);
 
         // change color for navigation bar and status bar
         Window window = getWindow();

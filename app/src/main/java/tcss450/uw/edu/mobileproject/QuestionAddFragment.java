@@ -14,11 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 
 /**
@@ -39,11 +42,14 @@ public class QuestionAddFragment extends Fragment {
     private final static String QUESTION_ADD_URL =
             "http://cssgate.insttech.washington.edu/~_450btm7/addQuestion.php?";
 
+    public static final String USER = "user", TAGS = "tags";
+
     private String mUserEmail = "";
+    private ArrayAdapter<String> mTagsAdapter;
     private QuestionAddListener mListener;
     private EditText mQuestDetailEditText;
     private EditText mQuestCompanyEditText;
-    private EditText mQuestTags;
+    private MultiAutoCompleteTextView mQuestTags;
 
     /**
      * Required empty public constructor
@@ -75,9 +81,10 @@ public class QuestionAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//
-//        }
+        if (getArguments() != null) {
+            mUserEmail = getArguments().getString(USER);
+
+        }
     }
 
     /**
@@ -96,7 +103,9 @@ public class QuestionAddFragment extends Fragment {
 
         mQuestDetailEditText = (EditText) view.findViewById(R.id.question_detail);
         mQuestCompanyEditText = (EditText) view.findViewById(R.id.question_company);
-        mQuestTags = (EditText) view.findViewById(R.id.question_tags);
+        mQuestTags = (MultiAutoCompleteTextView) view.findViewById(R.id.question_tags);
+        mQuestTags.setAdapter(mTagsAdapter);
+        mQuestTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.add_question);
@@ -113,13 +122,25 @@ public class QuestionAddFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Set Email.
-     *
-     * @param email email
-     */
-    public void setUserEmail(String email) {
-        mUserEmail = email;
+//    /**
+//     * Set Email.
+//     *
+//     * @param email email
+//     */
+//    public void setUserEmail(String email) {
+//        mUserEmail = email;
+//    }
+
+    public void setTagsAdapter(List<String> tags) {
+        Log.i(LOG, "Size of tags is " + tags.size());
+        if (!tags.isEmpty()) {
+            mTagsAdapter = new ArrayAdapter<>(
+                    getContext(),   // FIXME NullPointerException????
+                    android.R.layout.simple_dropdown_item_1line,
+                    tags);
+        } else {
+            // TODO if list is empty.
+        }
     }
 
     /**
