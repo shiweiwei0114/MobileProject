@@ -35,5 +35,5 @@
     <string name="USER">user</string>
 
     <!-- Share feature -->
-    <string name="send_to">Share the question via...</string>
+    <string name="send_to">Share the question via…</string>
 </resources>

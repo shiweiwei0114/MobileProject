@@ -4,10 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context="tcss450.uw.edu.mobileproject.authenticate.RegistrationActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="70sp"
+        android:id="@+id/logo"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/app_name" />
 
     <LinearLayout
         android:layout_width="match_parent"

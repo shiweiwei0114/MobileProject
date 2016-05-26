@@ -34,6 +34,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 import tcss450.uw.edu.mobileproject.model.Question;
@@ -51,10 +53,14 @@ public class HomeActivity extends AppCompatActivity implements
 
     private final static String LOG = "HomeActivity";
 
+    private final static String TAGS_URL =
+            "http://cssgate.insttech.washington.edu/~_450btm7/test.php?cmd=tags_list";
+
     /**
      * user email to transfer to other fragment.
      */
     private String mUserEmail;
+    private ArrayList<String> mTags;
     private QuestionsListFragment questListFragment;
 
     private ShareActionProvider mShareActionProvider;
@@ -71,6 +77,11 @@ public class HomeActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // download Tags list
+        DownloadTagsTask tagsTask = new DownloadTagsTask();
+        tagsTask.execute(TAGS_URL);
+
+        // get user from either SignInActivity or RegistrationActivity;
         Intent intent = getIntent();
         mUserEmail = intent.getStringExtra(SignInActivity.USER_EMAIL);
 
@@ -85,7 +96,10 @@ public class HomeActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     QuestionAddFragment questionAddFragment = new QuestionAddFragment();
-                    questionAddFragment.setUserEmail(mUserEmail);
+                    Bundle args = new Bundle();
+                    args.putString(QuestionAddFragment.USER, mUserEmail);
+                    args.putStringArrayList(QuestionAddFragment.TAGS, mTags);
+                    questionAddFragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, questionAddFragment)
                             .addToBackStack(null)
@@ -113,6 +127,10 @@ public class HomeActivity extends AppCompatActivity implements
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
         }
+    }
+
+    public List<String> getTags() {
+        return mTags;
     }
 
     /**
@@ -320,6 +338,75 @@ public class HomeActivity extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(), "Something wrong with the data "
                         + e.getMessage(), Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private class DownloadTagsTask extends AsyncTask<String, Void, String> {
+
+        /**
+         * Override this method to perform a computation on a background thread. The
+         * specified parameters are the parameters passed to {@link #execute}
+         * by the caller of this task.
+         * <p>
+         * This method can call {@link #publishProgress} to publish updates
+         * on the UI thread.
+         *
+         * @param urls The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to add question, Reason: " + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result the string in echo from php file.
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getApplicationContext(),
+                        result, Toast.LENGTH_LONG).show();
+                return;
+            }
+            ArrayList<String> tags = new ArrayList<>();
+            result = Question.parseTagsQuestionJSON(result, tags);
+            // Something wrong with the JSON returned.
+            if (result != null) {
+                Toast.makeText(getApplicationContext(),
+                        result, Toast.LENGTH_LONG).show();
+                return;
+            }
+            mTags = tags;
         }
     }
 }
