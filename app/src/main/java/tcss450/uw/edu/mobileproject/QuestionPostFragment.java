@@ -7,6 +7,7 @@ package tcss450.uw.edu.mobileproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -76,9 +77,10 @@ public class QuestionPostFragment extends Fragment {
     private List<String> mTags;
     private List<Answer> mAnswersList;
 
-    private String mSavedAns;
+    //private String mSavedAns;
     private String mUserEmail;
     private String mQuestID;
+
 
     /**
      * Required empty public constructor
@@ -110,6 +112,7 @@ public class QuestionPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     /**
@@ -266,6 +269,8 @@ public class QuestionPostFragment extends Fragment {
         mAnsContainer = (LinearLayout) view.findViewById(R.id.ans_container);
         mAnsEditText = (EditText) view.findViewById(R.id.ans_text);
 
+
+
         Button ans_btn = (Button) view.findViewById(R.id.ans_btn);
         ans_btn.setOnClickListener(new View.OnClickListener() {
             /**
@@ -285,9 +290,34 @@ public class QuestionPostFragment extends Fragment {
                 task.execute(url);
             }
         });
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
+
+        FloatingActionButton addQuestionActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.add_question);
-        floatingActionButton.hide();
+        addQuestionActionButton.hide();
+
+        FloatingActionButton shareActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.share);
+        shareActionButton.show();
+
+        if (shareActionButton != null) {
+            shareActionButton.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * shareActionButton onClickListener,send the data to the web server.
+                 * @param v view
+                 */
+                @Override
+                public void onClick(View v) {
+                    Log.d("TAG","whatever");
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this cool interview question from Proterview!" + '\n'
+                            + mQuestDetailTextView.getText().toString());
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, "Share via"));
+                }
+            });
+        }
         return view;
     }
 

@@ -14,14 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
-import java.util.List;
 
 
 /**
@@ -45,7 +43,7 @@ public class QuestionAddFragment extends Fragment {
     public static final String USER = "user", TAGS = "tags";
 
     private String mUserEmail = "";
-    private ArrayAdapter<String> mTagsAdapter;
+    //private ArrayAdapter<String> mTagsAdapter;
     private QuestionAddListener mListener;
     private EditText mQuestDetailEditText;
     private EditText mQuestCompanyEditText;
@@ -104,12 +102,16 @@ public class QuestionAddFragment extends Fragment {
         mQuestDetailEditText = (EditText) view.findViewById(R.id.question_detail);
         mQuestCompanyEditText = (EditText) view.findViewById(R.id.question_company);
         mQuestTags = (MultiAutoCompleteTextView) view.findViewById(R.id.question_tags);
-        mQuestTags.setAdapter(mTagsAdapter);
+        //mQuestTags.setAdapter(mTagsAdapter);
         mQuestTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.add_question);
         floatingActionButton.hide();
+
+        FloatingActionButton floatingActionButton2 = (FloatingActionButton)
+                getActivity().findViewById(R.id.share);
+        floatingActionButton2.hide();
 
         Button addCourseButton = (Button) view.findViewById(R.id.add_question_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -131,17 +133,17 @@ public class QuestionAddFragment extends Fragment {
 //        mUserEmail = email;
 //    }
 
-    public void setTagsAdapter(List<String> tags) {
-        Log.i(LOG, "Size of tags is " + tags.size());
-        if (!tags.isEmpty()) {
-            mTagsAdapter = new ArrayAdapter<>(
-                    getContext(),   // FIXME NullPointerException????
-                    android.R.layout.simple_dropdown_item_1line,
-                    tags);
-        } else {
-            // TODO if list is empty.
-        }
-    }
+//    public void setTagsAdapter(List<String> tags) {
+//        Log.i(LOG, "Size of tags is " + tags.size());
+//        if (!tags.isEmpty()) {
+//            mTagsAdapter = new ArrayAdapter<>(
+//                    getContext(),   // FIXME NullPointerException????
+//                    android.R.layout.simple_dropdown_item_1line,
+//                    tags);
+//        } else {
+//            // TODO if list is empty.
+//        }
+//    }
 
     /**
      * Build the Url.

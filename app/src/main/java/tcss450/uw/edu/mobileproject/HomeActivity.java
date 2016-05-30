@@ -86,6 +86,9 @@ public class HomeActivity extends AppCompatActivity implements
         mUserEmail = intent.getStringExtra(SignInActivity.USER_EMAIL);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_question);
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.share);
+        fab2.hide();
+
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
 
@@ -127,6 +130,8 @@ public class HomeActivity extends AppCompatActivity implements
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+
     }
 
     public List<String> getTags() {
@@ -175,18 +180,18 @@ public class HomeActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_item_share) {
-            //mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-            //SharedPreferences questionPrefs = getPreferences(QuestionPostFragment.QUEST_SELECTED, 0);
-            Log.d("TAG","whatever");
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this interview question!" + "question");
-            sendIntent.setType("text/plain");
-            startActivity(Intent.createChooser(sendIntent, "Share via"));
-           // startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-            return true;
-        }
+//        if (id == R.id.menu_item_share) {
+//            //mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+//            //SharedPreferences questionPrefs = getPreferences(QuestionPostFragment.QUEST_SELECTED, 0);
+//            Log.d("TAG","whatever");
+//            Intent sendIntent = new Intent();
+//            sendIntent.setAction(Intent.ACTION_SEND);
+//            sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this interview question!" + "question");
+//            sendIntent.setType("text/plain");
+//            startActivity(Intent.createChooser(sendIntent, "Share via"));
+//           // startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+//            return true;
+//        }
 
         if (id == R.id.action_logout) {
             SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
@@ -224,8 +229,14 @@ public class HomeActivity extends AppCompatActivity implements
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
         } else if (id == R.id.nav_aboutUs) {
-
+            AboutUsFragment aboutUsFragment = new AboutUsFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment_container, aboutUsFragment).addToBackStack(null).commit();
         } else if (id == R.id.nav_logOut) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
+                    Context.MODE_PRIVATE);
+            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false).apply();
+            sharedPreferences.edit().putString(getString(R.string.USER), null).apply();
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
             finish();
