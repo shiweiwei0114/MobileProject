@@ -107,6 +107,10 @@ public class QuestionsListFragment extends Fragment {
                 getActivity().findViewById(R.id.add_question);
         floatingActionButton.show();
 
+        FloatingActionButton floatingActionButton2 = (FloatingActionButton)
+                getActivity().findViewById(R.id.share);
+        floatingActionButton2.hide();
+
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

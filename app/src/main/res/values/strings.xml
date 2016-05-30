@@ -36,4 +36,14 @@
 
     <!-- Share feature -->
     <string name="send_to">Share the question via…</string>
+
+    <!-- About us Strings-->
+    <string name="kyle">Kyle Doan</string>
+    <string name="weiwei">Weiwei Shi</string>
+
+    <!--About Us details-->
+    <string name="kyle_details">CSS @ UWT, Passion about AI</string>
+    <string name="weiwei_details">CSS @ UWT, Passion about Data/AR/VR</string>
+
+
 </resources>
