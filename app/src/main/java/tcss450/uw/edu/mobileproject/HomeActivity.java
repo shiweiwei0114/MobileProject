@@ -39,8 +39,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 import tcss450.uw.edu.mobileproject.model.Question;
@@ -86,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         mTags = new ArrayList<>();
-        mTags.add("All");
+        mTags.add(getResources().getString(R.string.tag_all));
         // download Tags list
         DownloadTagsTask tagsTask = new DownloadTagsTask();
         tagsTask.execute(TAGS_URL);
@@ -111,7 +109,9 @@ public class HomeActivity extends AppCompatActivity implements
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_question);
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.share);
-        fab2.hide();
+        if (fab2 != null) {
+            fab2.hide();
+        }
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +122,7 @@ public class HomeActivity extends AppCompatActivity implements
                  */
                 @Override
                 public void onClick(View v) {
-                    QuestionAddFragment questionAddFragment = new QuestionAddFragment();
-                    Bundle args = new Bundle();
-                    args.putString(QuestionAddFragment.USER, mUserEmail);
-                    args.putStringArrayList(QuestionAddFragment.TAGS, mTags);
-                    questionAddFragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, questionAddFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    callAddQuestionFragment();
                 }
             });
         }
@@ -143,8 +135,23 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
-    public List<String> getTags() {
-        return mTags;
+    private void callAddQuestionFragment() {
+        QuestionAddFragment questionAddFragment = new QuestionAddFragment();
+        Bundle args = new Bundle();
+        args.putString(QuestionAddFragment.USER, mUserEmail);
+        args.putStringArrayList(QuestionAddFragment.TAGS, mTags);
+        questionAddFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, questionAddFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ProjectDB db = new ProjectDB(this);
+        db.closeDB();
     }
 
     /**
@@ -228,9 +235,10 @@ public class HomeActivity extends AppCompatActivity implements
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_add) {
-            QuestionAddFragment questionAddFragment = new QuestionAddFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
+            callAddQuestionFragment();
+//            QuestionAddFragment questionAddFragment = new QuestionAddFragment();
+//            FragmentManager manager = getSupportFragmentManager();
+//            manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
         } else if (id == R.id.nav_aboutUs) {
             AboutUsFragment aboutUsFragment = new AboutUsFragment();
             FragmentManager manager = getSupportFragmentManager();
@@ -281,7 +289,7 @@ public class HomeActivity extends AppCompatActivity implements
         // Takes you back to the previous fragment by popping the current fragment out.
         getSupportFragmentManager().popBackStackImmediate();
         mTags.clear();
-        mTags.add("All");
+        mTags.add(getResources().getString(R.string.tag_all));
         DownloadTagsTask tagsTask = new DownloadTagsTask();
         tagsTask.execute(TAGS_URL);
     }
@@ -432,7 +440,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         private String saveToDB(String tagJSON) {
             if (mDB == null) {
-                mDB = new ProjectDB(getApplicationContext());
+                mDB = new ProjectDB(HomeActivity.this);
             }
 
             // Delete old data so that you can refresh the local

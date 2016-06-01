@@ -7,11 +7,14 @@
 package tcss450.uw.edu.mobileproject;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import tcss450.uw.edu.mobileproject.QuestionsListFragment.OnListFragmentInteractionListener;
@@ -66,7 +69,8 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getQuestDetail());
-        holder.mDateView.setText(mValues.get(position).getQuestDatePost());
+        setDatePostTextView(mValues.get(position).getQuestDatePost(), holder.mDateView);
+//        holder.mDateView.setText(mValues.get(position).getQuestDatePost());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,30 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
                 }
             }
         });
+    }
+
+    private void setDatePostTextView(String time, TextView textView) {
+        Calendar now = Calendar.getInstance();
+        Timestamp timePost = Timestamp.valueOf(time);
+        long timeDif = now.getTimeInMillis() - timePost.getTime();  // millisecond
+        timeDif /= 1000;   // second
+        String timeDisplay = "";
+//        Log.i(LOG, "Time Different: " + String.valueOf(timeDif));
+        if (timeDif < 60) {
+            timeDisplay = "Just now";
+        } else if (timeDif < 3600) {    // less than 1 hour, using minute
+            timeDif /= 60;  // minute
+            timeDisplay = String.valueOf(timeDif) + " minutes ago";
+        } else if (timeDif < 86400) { // less than 1 day, using hour
+            timeDif /= 3600;    // hour
+            timeDisplay = String.valueOf(timeDif) + " hours ago";
+        } else if (timeDif < 2592000) {
+            timeDif /= 86400;
+            timeDisplay = String.valueOf(timeDif) + " days ago";
+        }
+        textView.setText(timeDisplay);
+//        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, // DIP : Device Indepentdent pixel
+//                getResources().getDimensionPixelSize(R.dimen.text_time_size));
     }
 
     /**

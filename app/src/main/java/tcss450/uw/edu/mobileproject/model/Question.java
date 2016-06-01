@@ -35,7 +35,6 @@ public class Question implements Serializable {
     private String mUserEmail;
     private String mCompany;
     private String mQuestDatePost;
-    private List<String> mTagsQuestion;
 
     /**
      * Constructor
@@ -52,7 +51,6 @@ public class Question implements Serializable {
         mQuestDatePost = theNow;
         mQuestDetail = theQuestDetail;
         mCompany = theCompany;
-        mTagsQuestion = new ArrayList<>();
     }
 
     public void setId(String id) {
@@ -129,14 +127,6 @@ public class Question implements Serializable {
      */
     public String getCompany() {
         return mCompany;
-    }
-
-    public void setTagsQuestion(List<String> tags) {
-        mTagsQuestion = new ArrayList<>(tags);
-    }
-
-    public List<String> getTagsQuestion() {
-        return mTagsQuestion;
     }
 
     /**

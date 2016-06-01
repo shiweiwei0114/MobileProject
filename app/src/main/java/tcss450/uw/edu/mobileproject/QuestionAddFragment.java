@@ -21,6 +21,7 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
@@ -108,6 +109,8 @@ public class QuestionAddFragment extends Fragment {
         mQuestTagsAutoComplete = (MultiAutoCompleteTextView) view.findViewById(R.id.question_tags);
         List<String> tagList = getArguments().getStringArrayList(TAGS);
         if (tagList != null) {
+            tagList = new ArrayList<>(tagList);
+            tagList.remove(0);
             mTagsAdapter = new ArrayAdapter<>(getActivity(),
                     android.R.layout.simple_dropdown_item_1line,
                     tagList);

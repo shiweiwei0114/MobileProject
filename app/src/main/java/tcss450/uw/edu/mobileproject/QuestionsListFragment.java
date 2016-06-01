@@ -53,12 +53,14 @@ public class QuestionsListFragment extends Fragment {
     private List<Question> mQuestsList;
     private List<Question> mDisplayList;
     private String mTagFilter;
+    private String mTagAllString = getResources().getString(R.string.tag_all);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public QuestionsListFragment() {
+
     }
 
     /**
@@ -69,7 +71,7 @@ public class QuestionsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTagFilter = "All";
+        mTagFilter = mTagAllString;
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -77,7 +79,7 @@ public class QuestionsListFragment extends Fragment {
 
     public void filterListBasedOnTag(String tag) {
         mTagFilter = tag;
-        if (tag.equals("All")) {
+        if (tag.equals(mTagAllString)) {
             mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
         } else {
             List<Question> displayList;
@@ -140,7 +142,7 @@ public class QuestionsListFragment extends Fragment {
             if (mQuestsList == null) {
                 mQuestsList = mDatabase.getQuestionsList();
             }
-            if (!mTagFilter.equals("All")) {
+            if (!mTagFilter.equals(mTagAllString)) {
                 filterListBasedOnTag(mTagFilter);
             } else {
                 mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
