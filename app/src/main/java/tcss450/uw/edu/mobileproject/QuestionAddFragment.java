@@ -14,12 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
+import java.util.List;
+
+import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
 
 
 /**
@@ -43,11 +47,11 @@ public class QuestionAddFragment extends Fragment {
     public static final String USER = "user", TAGS = "tags";
 
     private String mUserEmail = "";
-    //private ArrayAdapter<String> mTagsAdapter;
+    private ArrayAdapter<String> mTagsAdapter;
     private QuestionAddListener mListener;
     private EditText mQuestDetailEditText;
     private EditText mQuestCompanyEditText;
-    private MultiAutoCompleteTextView mQuestTags;
+    private MultiAutoCompleteTextView mQuestTagsAutoComplete;
 
     /**
      * Required empty public constructor
@@ -101,9 +105,15 @@ public class QuestionAddFragment extends Fragment {
 
         mQuestDetailEditText = (EditText) view.findViewById(R.id.question_detail);
         mQuestCompanyEditText = (EditText) view.findViewById(R.id.question_company);
-        mQuestTags = (MultiAutoCompleteTextView) view.findViewById(R.id.question_tags);
-        //mQuestTags.setAdapter(mTagsAdapter);
-        mQuestTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        mQuestTagsAutoComplete = (MultiAutoCompleteTextView) view.findViewById(R.id.question_tags);
+        List<String> tagList = getArguments().getStringArrayList(TAGS);
+        if (tagList != null) {
+            mTagsAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    tagList);
+            mQuestTagsAutoComplete.setAdapter(mTagsAdapter);
+        }
+        mQuestTagsAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.add_question);
@@ -168,7 +178,7 @@ public class QuestionAddFragment extends Fragment {
             Log.i(LOG, questCompany);
             sb.append(URLEncoder.encode(questCompany, "UTF-8"));
 
-            String tags = mQuestTags.getText().toString();
+            String tags = mQuestTagsAutoComplete.getText().toString();
             sb.append("&tags=");
             Log.i(LOG, tags);
             sb.append(URLEncoder.encode(tags, "UTF-8"));
@@ -180,16 +190,16 @@ public class QuestionAddFragment extends Fragment {
     }
 
 
-    /**
-     * Button Pressed, then add the question.
-     *
-     * @param url the url
-     */
-    public void onButtonPressed(String url) {
-        if (mListener != null) {
-            mListener.addQuestion(url);
-        }
-    }
+//    /**
+//     * Button Pressed, then add the question.
+//     *
+//     * @param url the url
+//     */
+//    public void onButtonPressed(String url) {
+//        if (mListener != null) {
+//            mListener.addQuestion(url);
+//        }
+//    }
 
     /**
      * Called when a fragment is first attached to its context.

@@ -24,8 +24,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,10 +39,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 import tcss450.uw.edu.mobileproject.model.Question;
+import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
 
 /**
  * The home page of activity of the app.
@@ -61,7 +67,9 @@ public class HomeActivity extends AppCompatActivity implements
      */
     private String mUserEmail;
     private ArrayList<String> mTags;
-    private QuestionsListFragment questListFragment;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private QuestionsListFragment mQuestListFragment;
 
     private ShareActionProvider mShareActionProvider;
 
@@ -77,9 +85,25 @@ public class HomeActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mTags = new ArrayList<>();
+        mTags.add("All");
         // download Tags list
         DownloadTagsTask tagsTask = new DownloadTagsTask();
         tagsTask.execute(TAGS_URL);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (mDrawerLayout != null) {
+            mDrawerLayout.addDrawerListener(toggle);
+        }
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+        mDrawerList = (ListView) findViewById(R.id.tags_drawer);
 
         // get user from either SignInActivity or RegistrationActivity;
         Intent intent = getIntent();
@@ -112,26 +136,11 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
-            QuestionsListFragment questListFragment = new QuestionsListFragment();
+            mQuestListFragment = new QuestionsListFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, questListFragment)
+                    .add(R.id.fragment_container, mQuestListFragment)
                     .commit();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if (drawer != null) {
-            drawer.addDrawerListener(toggle);
-        }
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(this);
-        }
-
-
     }
 
     public List<String> getTags() {
@@ -162,7 +171,7 @@ public class HomeActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
 
@@ -218,13 +227,7 @@ public class HomeActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_Java) {
-            // Handle the camera action
-            //questListFragment.changeList();
-        } else if (id == R.id.nav_SQL) {
-
-        }  else if (id == R.id.nav_add) {
+        if (id == R.id.nav_add) {
             QuestionAddFragment questionAddFragment = new QuestionAddFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
@@ -241,9 +244,8 @@ public class HomeActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer != null) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
         return true;
     }
@@ -278,8 +280,11 @@ public class HomeActivity extends AppCompatActivity implements
         task.execute(url);
         // Takes you back to the previous fragment by popping the current fragment out.
         getSupportFragmentManager().popBackStackImmediate();
+        mTags.clear();
+        mTags.add("All");
+        DownloadTagsTask tagsTask = new DownloadTagsTask();
+        tagsTask.execute(TAGS_URL);
     }
-
 
     /**
      * Store data by using web service.
@@ -354,6 +359,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     private class DownloadTagsTask extends AsyncTask<String, Void, String> {
 
+        private ProjectDB mDB;
         /**
          * Override this method to perform a computation on a background thread. The
          * specified parameters are the parameters passed to {@link #execute}
@@ -405,19 +411,84 @@ public class HomeActivity extends AppCompatActivity implements
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(HomeActivity.this,
                         result, Toast.LENGTH_LONG).show();
                 return;
             }
-            ArrayList<String> tags = new ArrayList<>();
-            result = Question.parseTagsQuestionJSON(result, tags);
+            result = saveToDB(result);
             // Something wrong with the JSON returned.
             if (result != null) {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(HomeActivity.this,
                         result, Toast.LENGTH_LONG).show();
                 return;
             }
-            mTags = tags;
+            mTags.addAll(mDB.getTagsList());
+            // set up the drawer's list view with items and click listener
+            mDrawerList.setAdapter(new ArrayAdapter<>(HomeActivity.this,
+                    R.layout.drawer_list_tags, mTags));
+            mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+            Log.i(LOG, "Size of tag list " + mTags.size());
+        }
+
+        private String saveToDB(String tagJSON) {
+            if (mDB == null) {
+                mDB = new ProjectDB(getApplicationContext());
+            }
+
+            // Delete old data so that you can refresh the local
+            // database with the network data.
+            mDB.deleteTagsTable();
+
+            String reason = null;
+            if (tagJSON != null) {
+                try {
+                    JSONArray arr = new JSONArray(tagJSON);
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject obj = arr.getJSONObject(i);
+                        String tag = obj.getString(Question.TAG_NAME);
+                        String questId = obj.getString(Question.ID);
+                        mDB.insertTag(tag, questId);
+                    }
+                } catch (JSONException e) {
+                    reason = "Unable to parse tags data, Reason: " + e.getMessage();
+                }
+            }
+//            mDB.closeDB();
+            return reason;
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        /**
+         * Callback method to be invoked when an item in this AdapterView has
+         * been clicked.
+         * <p/>
+         * Implementers can call getItemAtPosition(position) if they need
+         * to access the data associated with the selected item.
+         *
+         * @param parent   The AdapterView where the click happened.
+         * @param view     The view within the AdapterView that was clicked (this
+         *                 will be a view provided by the adapter)
+         * @param position The position of the view in the adapter.
+         * @param id       The row id of the item that was clicked.
+         */
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.i(LOG, "position of tag " + position);
+            selectTag(position);
+        }
+    }
+
+    private void selectTag(int position) {
+        String tagFilter = mTags.get(position);
+        Log.i(LOG, "Tag Selected is " + tagFilter);
+        mQuestListFragment.filterListBasedOnTag(tagFilter);
+
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mTags.get(position));
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 }

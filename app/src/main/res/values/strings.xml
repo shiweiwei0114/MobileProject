@@ -4,7 +4,7 @@
     <string name="share">Share</string>
 
     <string name="title_activity_home">Questions</string>
-
+    <string name="tag_all">All</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -45,5 +45,16 @@
     <string name="kyle_details">CSS @ UWT, Passion about AI</string>
     <string name="weiwei_details">CSS @ UWT, Passion about Data/AR/VR</string>
 
-
+    <!--SQLite Query-->
+    <string name="CREATE_QUESTION_SQL">CREATE TABLE IF NOT EXISTS Questions
+        (QuestID INT PRIMARY KEY, email TEXT, DatePost TEXT, QuestDetail TEXT, Company TEXT)
+    </string>
+    <string name="DROP_QUESTION_SQL">DROP TABLE IF EXISTS Questions</string>
+    <string name="CREATE_TAG_SQL">CREATE TABLE IF NOT EXISTS Tags
+        (TagName TEXT, QuestID INT, PRIMARY KEY(TagName, QuestID))</string>
+    <string name="DROP_TAG_SQL">DROP TABLE IF EXISTS Tags</string>
+    <string name="CREATE_ANSWER_SQL">CREATE TABLE IF NOT EXISTS Answers
+        (AnsID INT PRIMARY KEY, QuestID INT, email TEXT, DatePost TEXT, AnsDetail TEXT)
+    </string>
+    <string name="DROP_ANSWER_SQL">DROP TABLE IF EXISTS Answers</string>
 </resources>
