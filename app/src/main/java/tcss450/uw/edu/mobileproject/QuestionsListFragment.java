@@ -51,9 +51,7 @@ public class QuestionsListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private List<Question> mQuestsList;
-    private List<Question> mDisplayList;
     private String mTagFilter;
-    private String mTagAllString = getResources().getString(R.string.tag_all);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,7 +69,7 @@ public class QuestionsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTagFilter = mTagAllString;
+        mTagFilter = getResources().getString(R.string.tag_all);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -79,7 +77,7 @@ public class QuestionsListFragment extends Fragment {
 
     public void filterListBasedOnTag(String tag) {
         mTagFilter = tag;
-        if (tag.equals(mTagAllString)) {
+        if (tag.equals(getResources().getString(R.string.tag_all))) {
             mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
         } else {
             List<Question> displayList;
@@ -87,8 +85,7 @@ public class QuestionsListFragment extends Fragment {
                 mDatabase = new ProjectDB(getActivity());
             }
             displayList = mDatabase.getQuestionsListBasedOnTag(tag);
-            mDisplayList = new ArrayList<>(displayList);
-            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mDisplayList, mListener));
+            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(displayList, mListener));
         }
     }
 
@@ -142,7 +139,7 @@ public class QuestionsListFragment extends Fragment {
             if (mQuestsList == null) {
                 mQuestsList = mDatabase.getQuestionsList();
             }
-            if (!mTagFilter.equals(mTagAllString)) {
+            if (!mTagFilter.equals(getResources().getString(R.string.tag_all))) {
                 filterListBasedOnTag(mTagFilter);
             } else {
                 mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
