@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcss450.uw.edu.mobileproject.model.Question;
+import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
 
 /**
  * A fragment representing a list of Questions.
@@ -46,10 +47,12 @@ public class QuestionsListFragment extends Fragment {
     public static final String QUEST_URL =
             "http://cssgate.insttech.washington.edu/~_450btm7/test.php?cmd=questions";
     private int mColumnCount = 1;
+    private ProjectDB mDatabase;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
-    private List<Question> mQuestsList; // try to keep this one unchanged after download
-    // mDisplayList is copy of the mQuestList and can be modified after user hitting some tags
+    private List<Question> mQuestsList;
+    private List<Question> mDisplayList;
+    private String mTagFilter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,14 +69,25 @@ public class QuestionsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mTagFilter = "All";
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
-    public void changeList(String tag) {
-
+    public void filterListBasedOnTag(String tag) {
+        mTagFilter = tag;
+        if (tag.equals("All")) {
+            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
+        } else {
+            List<Question> displayList;
+            if (mDatabase == null) {
+                mDatabase = new ProjectDB(getActivity());
+            }
+            displayList = mDatabase.getQuestionsListBasedOnTag(tag);
+            mDisplayList = new ArrayList<>(displayList);
+            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mDisplayList, mListener));
+        }
     }
 
     /**
@@ -100,7 +114,6 @@ public class QuestionsListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             mRecyclerView = recyclerView;
-//            recyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(QuestionContent.ITEMS, mListener));
         }
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
@@ -121,10 +134,31 @@ public class QuestionsListFragment extends Fragment {
             Toast.makeText(view.getContext(),
                     "No network connection available. Cannot display courses",
                     Toast.LENGTH_SHORT).show();
-            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(new ArrayList<Question>(), mListener));
+            if (mDatabase == null) {
+                mDatabase = new ProjectDB(getActivity());
+            }
+            if (mQuestsList == null) {
+                mQuestsList = mDatabase.getQuestionsList();
+            }
+            if (!mTagFilter.equals("All")) {
+                filterListBasedOnTag(mTagFilter);
+            } else {
+                mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
+            }
+//            mDatabase.closeDB();
         }
         return view;
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mDisplayList != null) {
+//            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mDisplayList, mListener));
+//        } else if (mQuestsList != null && mQuestsList.size() > 0){
+//            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
+//        }
+//    }
 
     /**
      * Called when a fragment is first attached to its context.
@@ -155,6 +189,8 @@ public class QuestionsListFragment extends Fragment {
      * Retrieve data by using web service.
      */
     private class DownloadQuestionsTask extends AsyncTask<String, Void, String> {
+
+        private ProjectDB mDB;
 
         /**
          * Override this method to perform a computation on a background thread. The
@@ -216,10 +252,29 @@ public class QuestionsListFragment extends Fragment {
                         result, Toast.LENGTH_LONG).show();
                 return;
             }
-            mQuestsList = questList;
+            mQuestsList = new ArrayList<>(questList);
             // Everything is good, show the list of courses.
-            if (!mQuestsList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(questList, mListener));
+            if (!questList.isEmpty()) {
+//                mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(questList, mListener));
+
+                if (mDB == null) {
+                    mDB = new ProjectDB(getActivity());
+                }
+
+                // Delete old data so that you can refresh the local
+                // database with the network data.
+                mDB.deleteQuestionsTable();
+
+                for (int i = 0; i < questList.size(); i++) {
+                    Question quest = questList.get(i);
+                    mDB.insertQuestion(quest.getId(),
+                            quest.getUser(),
+                            quest.getQuestDatePost(),
+                            quest.getQuestDetail(),
+                            quest.getCompany());
+                }
+                filterListBasedOnTag(mTagFilter);
+//                mDB.closeDB();
             }
         }
     }

@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -175,7 +176,7 @@ public class QuestionPostFragment extends Fragment {
             );
             params.setMargins(0, 0, 15, 0);  // left, top, right, bottom
             for (int i = 0; i < mTags.size(); i++) {
-                TextView tagView = new TextView(this.getActivity());
+                TextView tagView = new TextView(getActivity());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     tagView.setBackground(getResources().getDrawable(R.drawable.round_rect, null));
                 }
@@ -268,8 +269,6 @@ public class QuestionPostFragment extends Fragment {
         mTagsContainer = (LinearLayout) view.findViewById(R.id.tags_containter);
         mAnsContainer = (LinearLayout) view.findViewById(R.id.ans_container);
         mAnsEditText = (EditText) view.findViewById(R.id.ans_text);
-
-
 
         Button ans_btn = (Button) view.findViewById(R.id.ans_btn);
         ans_btn.setOnClickListener(new View.OnClickListener() {

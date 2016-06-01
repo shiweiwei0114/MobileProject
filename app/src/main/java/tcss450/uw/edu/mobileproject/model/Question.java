@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +34,8 @@ public class Question implements Serializable {
     private String mQuestDetail;
     private String mUserEmail;
     private String mCompany;
-
     private String mQuestDatePost;
+    private List<String> mTagsQuestion;
 
     /**
      * Constructor
@@ -51,6 +52,42 @@ public class Question implements Serializable {
         mQuestDatePost = theNow;
         mQuestDetail = theQuestDetail;
         mCompany = theCompany;
+        mTagsQuestion = new ArrayList<>();
+    }
+
+    public void setId(String id) {
+        if (id == null || id.length() == 0) {
+            throw new IllegalArgumentException();
+        }
+        mQuestId = id;
+    }
+
+    public void setEmail(String email) {
+        if (email == null || email.length() < 5 || !email.contains("@")) {
+            throw new IllegalArgumentException();
+        }
+        mUserEmail = email;
+    }
+
+    public void setDate(String time) {
+        if (time == null) {
+            throw new IllegalArgumentException();
+        }
+        mQuestDatePost = time;
+    }
+
+    public void setQuestDetail(String questDetail) {
+        if (questDetail == null || questDetail.length() < 5) {
+            throw new IllegalArgumentException();
+        }
+        mQuestDetail = questDetail;
+    }
+
+    public void setCompany(String company) {
+        if (company == null || company.length() == 0) {
+            throw new IllegalArgumentException();
+        }
+        mCompany = company;
     }
 
     /**
@@ -92,6 +129,14 @@ public class Question implements Serializable {
      */
     public String getCompany() {
         return mCompany;
+    }
+
+    public void setTagsQuestion(List<String> tags) {
+        mTagsQuestion = new ArrayList<>(tags);
+    }
+
+    public List<String> getTagsQuestion() {
+        return mTagsQuestion;
     }
 
     /**
