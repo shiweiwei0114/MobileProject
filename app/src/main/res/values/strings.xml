@@ -12,7 +12,7 @@
     <string name="question_detail_hint">Enter Question Detail</string>
     <string name="question_company">Which company ask the question?</string>
     <string name="question_tags">Tags (Ex: Algorithm, Database, etc.)</string>
-    <string name="question_add_button">add question</string>
+    <string name="question_add_button">Add Question</string>
     <string name="reply">Reply</string>
 
     <!--Log in page string -->

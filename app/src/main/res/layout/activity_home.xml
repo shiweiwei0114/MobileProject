@@ -13,12 +13,12 @@
         layout="@layout/app_bar_home" />
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="false">
-
+        android:fitsSystemWindows="false"
+        android:nestedScrollingEnabled="true"
+        app:menu="@menu/activity_home_drawer">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -27,20 +27,24 @@
             <include
                 layout="@layout/nav_header_home" />
 
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@android:color/darker_gray" />-->
+
+            <android.support.design.widget.NavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/activity_home_drawer" />
+
             <ListView
                 android:id="@+id/tags_drawer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp" />
-
-            <android.support.design.internal.NavigationMenuItemView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:menu="@menu/activity_home_drawer">
-
-            </android.support.design.internal.NavigationMenuItemView>
 
         </LinearLayout>
 

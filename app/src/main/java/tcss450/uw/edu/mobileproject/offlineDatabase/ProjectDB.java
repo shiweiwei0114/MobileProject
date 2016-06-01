@@ -60,28 +60,6 @@ public class ProjectDB {
         mSQLiteDatabase.close();
     }
 
-    public boolean insertAnswer(String id, String questId, String email, String date, String ansDetail) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("AnsID", id);
-        contentValues.put("QuestID", questId);
-        contentValues.put("email", email);
-        contentValues.put("DatePost", date);
-        contentValues.put("AnsDetail", ansDetail);
-
-        long rowId = mSQLiteDatabase.insert(ANSWER_TABLE, null, contentValues);
-        return rowId != -1;
-    }
-
-    public void deleteAllTables() {
-        deleteAnswersTable();
-        deleteQuestionsTable();
-        deleteTagsTable();
-    }
-
-    public void deleteAnswersTable() {
-        mSQLiteDatabase.delete(ANSWER_TABLE, null, null);
-    }
-
     public boolean insertTag(String tagName, String questId) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("TagName", tagName);
@@ -136,7 +114,7 @@ public class ProjectDB {
     public List<Question> getQuestionsListBasedOnTag(String tag) {
         String myQuery = "SELECT Questions.QuestID, email, DatePost, QuestDetail, Company " +
                 "FROM Questions JOIN Tags ON Questions.QuestID = Tags.QuestID " +
-                "WHERE TagName=?";
+                "WHERE TagName=? ORDER BY DatePost DESC";
         Cursor c = mSQLiteDatabase.rawQuery(myQuery, new String[]{tag});
         return convertToList(c);
     }

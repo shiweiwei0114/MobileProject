@@ -156,4 +156,31 @@ public class QuestionTest extends TestCase{
 
         }
     }
+
+    @Test
+    public void testSetEmptyCompany() {
+        try {
+            mQuest.setCompany("");
+            fail("Question company can be set to empty");
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
+
+    @Test
+    public void testGetCompany() {
+        assertEquals(mQuest.getCompany(), "UWT");
+    }
+
+    @Test
+    public void testSetCompany() {
+        String newCompany = "Seattle";
+        mQuest.setCompany(newCompany);
+        assertEquals(mQuest.getCompany(), newCompany);
+    }
+
+    @Test
+    public void testParseQuestionJSON() {
+
+    }
 }
