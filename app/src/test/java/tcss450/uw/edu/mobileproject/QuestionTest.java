@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import tcss450.uw.edu.mobileproject.model.Question;
 
 /**
@@ -181,6 +183,21 @@ public class QuestionTest extends TestCase{
 
     @Test
     public void testParseQuestionJSON() {
+        String questionJSON = "[{\"QuestID\":\"100\",\"email\":\"k@uw.edu\"," +
+                "\"QuestDatePost\":\"2016-05-04 14:18:05\",\"QuestDetail\":\"How google search works?\"," +
+                "\"Company\":\"Google\"}," +
+                "{\"QuestID\":\"101\",\"email\":\"k1@uw.edu\"," +
+                "\"QuestDatePost\":\"2016-05-04 14:21:05\",\"QuestDetail\":\"How facebook search works?\"," +
+                "\"Company\":\"facebook\"}]";
+        String message = Question.parseQuestionJSON(questionJSON, new ArrayList<Question>());
+        assertTrue("JSON With Valid String", message == null);
+    }
 
+    @Test
+    public void testParseTagJSON() {
+        String tagJSON = "[{\"TagName\":\"Algorithm\",\"QuestID\":\"22\"}," +
+                "{\"TagName\":\"Algorithm\",\"QuestID\":\"29\"}]";
+        String message = Question.parseTagsQuestionJSON(tagJSON, new ArrayList<String>());
+        assertTrue("JSON With Valid String", message == null);
     }
 }

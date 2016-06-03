@@ -48,7 +48,6 @@ public class QuestionAddFragment extends Fragment {
     public static final String USER = "user", TAGS = "tags";
 
     private String mUserEmail = "";
-    private ArrayAdapter<String> mTagsAdapter;
     private QuestionAddListener mListener;
     private EditText mQuestDetailEditText;
     private EditText mQuestCompanyEditText;
@@ -111,10 +110,10 @@ public class QuestionAddFragment extends Fragment {
         if (tagList != null) {
             tagList = new ArrayList<>(tagList);
             tagList.remove(0);
-            mTagsAdapter = new ArrayAdapter<>(getActivity(),
+            ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(),
                     android.R.layout.simple_dropdown_item_1line,
                     tagList);
-            mQuestTagsAutoComplete.setAdapter(mTagsAdapter);
+            mQuestTagsAutoComplete.setAdapter(tagsAdapter);
         }
         mQuestTagsAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 

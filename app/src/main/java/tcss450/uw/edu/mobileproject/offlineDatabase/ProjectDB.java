@@ -21,14 +21,12 @@ public class ProjectDB {
     public static final String DB_NAME = "Question.db";
 
     public static final String QUESTION_TABLE = "Questions";
-    private static final String ANSWER_TABLE = "Answers";
     private static final String TAG_TABLE = "Tags";
-    private QuestionDBHelper mQuestionDBHelper;
     private SQLiteDatabase mSQLiteDatabase;
 
     public ProjectDB(Context context) {
-        mQuestionDBHelper = new QuestionDBHelper(context, DB_NAME, null, DB_VERSION);
-        mSQLiteDatabase = mQuestionDBHelper.getWritableDatabase();
+        ProjectDBHelper dbHelper = new ProjectDBHelper(context, DB_NAME, null, DB_VERSION);
+        mSQLiteDatabase = dbHelper.getWritableDatabase();
     }
 
     /**
@@ -91,10 +89,10 @@ public class ProjectDB {
                 null,           // don't filter by row groups
                 null            // The sort order
         );
-        return convertToList(c);
+        return convertToQuestionList(c);
     }
 
-    private List<Question> convertToList(Cursor c) {
+    private List<Question> convertToQuestionList(Cursor c) {
         c.moveToFirst();
         List<Question> list = new ArrayList<>();
         for (int i = 0; i < c.getCount(); i++) {
@@ -116,7 +114,7 @@ public class ProjectDB {
                 "FROM Questions JOIN Tags ON Questions.QuestID = Tags.QuestID " +
                 "WHERE TagName=? ORDER BY DatePost DESC";
         Cursor c = mSQLiteDatabase.rawQuery(myQuery, new String[]{tag});
-        return convertToList(c);
+        return convertToQuestionList(c);
     }
 
     /**
@@ -146,49 +144,17 @@ public class ProjectDB {
         return list;
     }
 
-    public List<Answer> getAnswersList(String questID) {
-        String[] columns = {
-                "AnsID","QuestID","email","DatePost","AnsDetail"
-        };
-        String selection = "QuestID = '" + questID + "'";
-        Cursor c = mSQLiteDatabase.query(
-                ANSWER_TABLE,   // The table to query
-                columns,        // The columns to return
-                selection,      // the columns for the WHERE clause
-                null,           // the values for the WHERE clause
-                null,           // don't group the rows
-                null,           // don't filter by row groups
-                null            // The sort order
-        );
-        c.moveToFirst();
-        List<Answer> list = new ArrayList<>();
-        for (int i = 0; i < c.getCount(); i++) {
-            String id = c.getString(0);
-            String email = c.getString(2);
-            String date = c.getString(3);
-            String ansDetail = c.getString(4);
-            Answer ans = new Answer(id, questID, email, date, ansDetail);
-            list.add(ans);
-            c.moveToNext();
-        }
-        return list;
-    }
-
-    class QuestionDBHelper extends SQLiteOpenHelper {
+    class ProjectDBHelper extends SQLiteOpenHelper {
         private final String CREATE_QUESTION_SQL;
-        private final String CREATE_ANSWER_SQL;
         private final String CREATE_TAG_SQL;
 
         private final String DROP_QUESTION_SQL;
-        private final String DROP_ANSWER_SQL;
         private final String DROP_TAG_SQL;
 
-        public QuestionDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        public ProjectDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
             CREATE_QUESTION_SQL = context.getString(R.string.CREATE_QUESTION_SQL);
             DROP_QUESTION_SQL = context.getString(R.string.DROP_QUESTION_SQL);
-            CREATE_ANSWER_SQL = context.getString(R.string.CREATE_ANSWER_SQL);
-            DROP_ANSWER_SQL = context.getString(R.string.DROP_ANSWER_SQL);
             CREATE_TAG_SQL = context.getString(R.string.CREATE_TAG_SQL);
             DROP_TAG_SQL = context.getString(R.string.DROP_TAG_SQL);
         }
@@ -196,14 +162,12 @@ public class ProjectDB {
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL(CREATE_QUESTION_SQL);
-            sqLiteDatabase.execSQL(CREATE_ANSWER_SQL);
             sqLiteDatabase.execSQL(CREATE_TAG_SQL);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
             sqLiteDatabase.execSQL(DROP_QUESTION_SQL);
-            sqLiteDatabase.execSQL(DROP_ANSWER_SQL);
             sqLiteDatabase.execSQL(DROP_TAG_SQL);
             onCreate(sqLiteDatabase);
         }
