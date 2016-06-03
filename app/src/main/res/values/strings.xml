@@ -42,7 +42,7 @@
     <string name="weiwei">Weiwei Shi</string>
 
     <!--About Us details-->
-    <string name="kyle_details">CSS @ UWT, Passion about AI</string>
+    <string name="kyle_details">CSS @ UWT, Passion about AI, Database and Machine Learning</string>
     <string name="weiwei_details">CSS @ UWT, Passion about Data/AR/VR</string>
 
     <!--SQLite Query-->

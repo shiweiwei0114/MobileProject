@@ -57,9 +57,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button mRegisterButton;
     private Button mBackToLogInButton;
 
-
-    public static final String USER_EMAIL = "tcss450.uw.edu.mobileproject.EMAIL";
-
     private static final String REGISTER_URL = "http://cssgate.insttech.washington.edu/~_450btm7/addUser.php";
 
 
@@ -151,7 +148,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     url += "?email=" + mEmailText.getText().toString() +
                             "&pwd=" + mPwdText.getText().toString().hashCode();
                     RegistrationTask task = new RegistrationTask();
-                    task.setUser(mEmailText.getText().toString());
                     task.execute(url);
                 }
             }
@@ -203,13 +199,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private class RegistrationTask extends AsyncTask<String, Void, String> {
 
-        private String mUser;
-
         private static final String TAG = "RegistrationTask";
-
-        void setUser(String user) {
-            mUser = user;
-        }
 
         /**
          * Override this method to perform a computation on a background thread.
@@ -305,10 +295,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences =
                             getSharedPreferences(getString(R.string.LOGIN_PREFS),
                             Context.MODE_PRIVATE);
+                    String user = mEmailText.getText().toString();
                     sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), true).apply();
-                    sharedPreferences.edit().putString(getString(R.string.USER), mUser).apply();
+                    sharedPreferences.edit().putString(getString(R.string.USER), user).apply();
                     Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                    intent.putExtra(USER_EMAIL, mUser);
+                    intent.putExtra(SignInActivity.USER_EMAIL, user);
                     startActivity(intent);
                     finish();
                 } else {
