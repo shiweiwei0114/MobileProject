@@ -82,7 +82,7 @@
             android:layout_row="1"
             android:layout_column="3"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:textColor="@color/question_box" />
 
 
