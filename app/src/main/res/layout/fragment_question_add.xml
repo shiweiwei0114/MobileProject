@@ -1,32 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".QuestionAddFragment">
 
     <EditText
+        android:id="@+id/question_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_detail"
         android:hint="@string/question_detail_hint" />
 
     <EditText
+        android:id="@+id/question_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_company"
         android:hint="@string/question_company" />
 
     <MultiAutoCompleteTextView
+        android:id="@+id/question_tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_tags"
         android:hint="@string/question_tags" />
 
     <Button
+        android:id="@+id/add_question_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_question_button"
         android:layout_gravity="end"
         android:text="@string/question_add_button" />
 

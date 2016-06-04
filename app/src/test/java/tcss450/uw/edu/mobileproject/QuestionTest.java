@@ -1,3 +1,8 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.1
+ */
 package tcss450.uw.edu.mobileproject;
 
 import junit.framework.TestCase;
@@ -12,7 +17,7 @@ import tcss450.uw.edu.mobileproject.model.Question;
 /**
  * Created by KyleD on 5/31/16.
  */
-public class QuestionTest extends TestCase{
+public class QuestionTest extends TestCase {
 
     private Question mQuest;
 

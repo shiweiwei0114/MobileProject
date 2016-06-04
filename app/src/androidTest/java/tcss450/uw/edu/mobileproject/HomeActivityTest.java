@@ -1,3 +1,9 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.1
+ */
+
 package tcss450.uw.edu.mobileproject;
 
 
@@ -6,7 +12,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.robotium.solo.Solo;
 
 /**
- * Created by Weiwei Shi on 5/28/2016.
+ * The home page of activity of the app.
+ *
+ * @author Weiwei Shi
+ * @version May 28, 2016
  */
 public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActivity> {
 
@@ -35,9 +44,10 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
         super.tearDown();
     }
 
-
-    //Test to see if the QuestionListFragment shows up.
-    //Also test the back button
+    /**
+     * Test to see if the QuestionListFragment shows up.
+     * Also test the back button
+     */
     public void testQuestionDetail() {
         solo.clickInRecyclerView(0);
         boolean foundQuestionDetail = solo.searchText("What is encapsulation");
@@ -47,7 +57,9 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
         assertTrue("Back to list worked!", foundQuestionList);
     }
 
-    //Test to see if add a question works
+    /**
+     * Test to see if add a question works
+     */
     public void testQuestionAddButton() {
         //Go to addQuestion page by clicking on the fab button
         solo.clickOnView(getActivity().findViewById(R.id.add_question));
@@ -61,20 +73,4 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
         boolean textFound = solo.searchText("What is heap sort?");
         assertTrue("Question added!", textFound);
     }
-
-
-
-    //Test to see if reply a question works
-//    public void testReplyQuestionButton() {
-//        //Go to the question detail first
-//        solo.clickInRecyclerView(0);
-//
-//        //Enter the reply message
-//        solo.enterText(0, "Interesting question");
-//        solo.clickOnButton("Reply");
-//        solo.sleep(20000);
-//        boolean replyWorks = solo.searchText("Interesting question");
-//        assertTrue("Reply successful", replyWorks);
-//        solo.sleep(20000);
-//    }
 }

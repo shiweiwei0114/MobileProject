@@ -1,3 +1,9 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.1
+ */
+
 package tcss450.uw.edu.mobileproject.model;
 
 import android.util.Log;
@@ -9,8 +15,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 /**
- * Created by KyleD on 5/11/16.
+ * Answer Details.
  *
+ * @author Kyle Doan
+ * @version May 5, 2016
  */
 public class Answer {
     private static final String LOG = "Answer";
@@ -22,6 +30,15 @@ public class Answer {
 
     private String mAnsID, mQuestID, mUser, mDatePost, mAnsDetail;
 
+    /**
+     * Answer Constructor.
+     *
+     * @param ansId     the Answer id
+     * @param questId   the question id
+     * @param user      the user who answer the question
+     * @param date      the date the user answer the question
+     * @param ansDetail the answer
+     */
     public Answer(String ansId, String questId, String user,
                   String date, String ansDetail) {
         mAnsID = ansId;
@@ -31,15 +48,55 @@ public class Answer {
         mAnsDetail = ansDetail;
     }
 
-    public String getAnsId() {return mAnsID;}
-    public String getQuestId() {return mQuestID;}
-    public String getUser() {return mUser;}
-    public String getAnsDatePost() {return mDatePost;}
-    public String getAnsDetail() {return mAnsDetail;}
+    /**
+     * Get Answer id.
+     *
+     * @return Answer id.
+     */
+    public String getAnsId() {
+        return mAnsID;
+    }
+
+    /**
+     * Get Question id.
+     *
+     * @return Question id.
+     */
+    public String getQuestId() {
+        return mQuestID;
+    }
+
+    /**
+     * Get the user.
+     *
+     * @return the user.
+     */
+    public String getUser() {
+        return mUser;
+    }
+
+    /**
+     * Get answer posted date.
+     *
+     * @return answer posted date.
+     */
+    public String getAnsDatePost() {
+        return mDatePost;
+    }
+
+    /**
+     * Ger answer details
+     *
+     * @return answer details
+     */
+    public String getAnsDetail() {
+        return mAnsDetail;
+    }
 
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns question list if success.
+     *
      * @param ansJSON JSAON file
      * @param ansList a list
      * @return reason or null if successful.

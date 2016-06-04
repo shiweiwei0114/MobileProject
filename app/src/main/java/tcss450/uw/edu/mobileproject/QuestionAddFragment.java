@@ -24,8 +24,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -136,26 +134,6 @@ public class QuestionAddFragment extends Fragment {
         return view;
     }
 
-//    /**
-//     * Set Email.
-//     *
-//     * @param email email
-//     */
-//    public void setUserEmail(String email) {
-//        mUserEmail = email;
-//    }
-
-//    public void setTagsAdapter(List<String> tags) {
-//        Log.i(LOG, "Size of tags is " + tags.size());
-//        if (!tags.isEmpty()) {
-//            mTagsAdapter = new ArrayAdapter<>(
-//                    getContext(),   // FIXME NullPointerException????
-//                    android.R.layout.simple_dropdown_item_1line,
-//                    tags);
-//        } else {
-//            // TODO if list is empty.
-//        }
-//    }
 
     /**
      * Build the Url.
@@ -181,6 +159,10 @@ public class QuestionAddFragment extends Fragment {
             sb.append(URLEncoder.encode(questCompany, "UTF-8"));
 
             String tags = mQuestTagsAutoComplete.getText().toString();
+            tags = tags.trim();
+            if (tags.charAt(tags.length() - 1) == ',') {
+                tags = tags.substring(0, tags.length() - 1);
+            }
             sb.append("&tags=");
             Log.i(LOG, tags);
             sb.append(URLEncoder.encode(tags, "UTF-8"));
@@ -191,17 +173,6 @@ public class QuestionAddFragment extends Fragment {
         return sb.toString();
     }
 
-
-//    /**
-//     * Button Pressed, then add the question.
-//     *
-//     * @param url the url
-//     */
-//    public void onButtonPressed(String url) {
-//        if (mListener != null) {
-//            mListener.addQuestion(url);
-//        }
-//    }
 
     /**
      * Called when a fragment is first attached to its context.

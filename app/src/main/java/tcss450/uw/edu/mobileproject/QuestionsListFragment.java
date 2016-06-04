@@ -34,9 +34,10 @@ import tcss450.uw.edu.mobileproject.offlineDatabase.ProjectDB;
 
 /**
  * A fragment representing a list of Questions.
- * <p>
+ * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
+ *
  * @author KyleD
  * @version May 5, 2016
  */
@@ -148,16 +149,6 @@ public class QuestionsListFragment extends Fragment {
         }
         return view;
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (mDisplayList != null) {
-//            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mDisplayList, mListener));
-//        } else if (mQuestsList != null && mQuestsList.size() > 0){
-//            mRecyclerView.setAdapter(new MyQuestionsListRecyclerViewAdapter(mQuestsList, mListener));
-//        }
-//    }
 
     /**
      * Called when a fragment is first attached to its context.
@@ -277,12 +268,13 @@ public class QuestionsListFragment extends Fragment {
             }
         }
     }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
