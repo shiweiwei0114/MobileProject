@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +22,10 @@ import java.util.List;
 public class Question implements Serializable {
 
     public static final String ID = "QuestID",
-                    DETAIL = "QuestDetail",
-                    EMAIL = "email",
-                    COMPANY = "Company",
-                    DATE = "DatePost";
+            DETAIL = "QuestDetail",
+            EMAIL = "email",
+            COMPANY = "Company",
+            DATE = "DatePost";
 
     public static final String TAG_NAME = "TagName";
 
@@ -38,11 +37,12 @@ public class Question implements Serializable {
 
     /**
      * Constructor
-     * @param theId the id
-     * @param theEmail the email
-     * @param theNow the date and time
+     *
+     * @param theId          the id
+     * @param theEmail       the email
+     * @param theNow         the date and time
      * @param theQuestDetail the question details
-     * @param theCompany the company names
+     * @param theCompany     the company names
      */
     public Question(String theId, String theEmail, String theNow,
                     String theQuestDetail, String theCompany) {
@@ -53,6 +53,11 @@ public class Question implements Serializable {
         mCompany = theCompany;
     }
 
+    /**
+     * Set Question id.
+     *
+     * @param id Question id.
+     */
     public void setId(String id) {
         if (id == null || id.length() == 0) {
             throw new IllegalArgumentException();
@@ -60,6 +65,11 @@ public class Question implements Serializable {
         mQuestId = id;
     }
 
+    /**
+     * Set Email.
+     *
+     * @param email user email
+     */
     public void setEmail(String email) {
         if (email == null || email.length() < 5 || !email.contains("@")) {
             throw new IllegalArgumentException();
@@ -67,6 +77,11 @@ public class Question implements Serializable {
         mUserEmail = email;
     }
 
+    /**
+     * Set the question posted date and time.
+     *
+     * @param time the question posted date and time.
+     */
     public void setDate(String time) {
         if (time == null) {
             throw new IllegalArgumentException();
@@ -74,6 +89,11 @@ public class Question implements Serializable {
         mQuestDatePost = time;
     }
 
+    /**
+     * Set question details
+     *
+     * @param questDetail the question details
+     */
     public void setQuestDetail(String questDetail) {
         if (questDetail == null || questDetail.length() < 5) {
             throw new IllegalArgumentException();
@@ -81,6 +101,11 @@ public class Question implements Serializable {
         mQuestDetail = questDetail;
     }
 
+    /**
+     * Set company
+     *
+     * @param company the company
+     */
     public void setCompany(String company) {
         if (company == null || company.length() == 0) {
             throw new IllegalArgumentException();
@@ -90,6 +115,7 @@ public class Question implements Serializable {
 
     /**
      * Get Id.
+     *
      * @return the Id.
      */
     public String getId() {
@@ -98,6 +124,7 @@ public class Question implements Serializable {
 
     /**
      * Get Question Detail.
+     *
      * @return question detail.
      */
     public String getQuestDetail() {
@@ -106,6 +133,7 @@ public class Question implements Serializable {
 
     /**
      * Get Question post date.
+     *
      * @return question post date.
      */
     public String getQuestDatePost() {
@@ -114,6 +142,7 @@ public class Question implements Serializable {
 
     /**
      * Get the usr Email.
+     *
      * @return the user email.
      */
     public String getUser() {
@@ -123,6 +152,7 @@ public class Question implements Serializable {
 
     /**
      * Get the company name.
+     *
      * @return the company name.
      */
     public String getCompany() {
@@ -132,7 +162,8 @@ public class Question implements Serializable {
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns question list if success.
-     * @param questJSON JSAON file
+     *
+     * @param questJSON  JSAON file
      * @param questsList a list
      * @return reason or null if successful.
      */
@@ -157,6 +188,14 @@ public class Question implements Serializable {
         return reason;
     }
 
+    /**
+     * Parses the json string, returns an error message if unsuccessful.
+     * Returns tag list if success.
+     *
+     * @param tagJSON JSAON file
+     * @param tags    a list
+     * @return reason or null if successful.
+     */
     public static String parseTagsQuestionJSON(String tagJSON, List<String> tags) {
         String reason = null;
         if (tagJSON != null) {

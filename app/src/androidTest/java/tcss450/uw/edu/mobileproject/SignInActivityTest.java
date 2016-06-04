@@ -1,3 +1,8 @@
+/*
+ * TCSS 450 - Mobile App Programming
+ * @author Weiwei Shi, Kyle Doan
+ * @version 1.1
+ */
 package tcss450.uw.edu.mobileproject;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -8,6 +13,8 @@ import tcss450.uw.edu.mobileproject.authenticate.SignInActivity;
 
 /**
  * Created by Weiwei Shi on 5/28/2016.
+ * Note: If you would like to test this class, please make sure you log out first.
+ * Because we used SharedPreference to store sign-in information.
  */
 public class SignInActivityTest extends ActivityInstrumentationTestCase2<SignInActivity> {
 
@@ -28,7 +35,10 @@ public class SignInActivityTest extends ActivityInstrumentationTestCase2<SignInA
         solo.finishOpenedActivities();
     }
 
-    //Test if the Login loads
+
+    /**
+     * Test if the Login loads
+     */
     public void testLogInLoads() {
         boolean emailTextViewLoaded = solo.searchText("Enter Email");
         boolean logInButtonLoaded = solo.searchButton("Log In");
@@ -36,7 +46,9 @@ public class SignInActivityTest extends ActivityInstrumentationTestCase2<SignInA
         assertTrue("Log In loaded", logInButtonLoaded);
     }
 
-    //Test if login works.
+    /**
+     * Test if login works.
+     */
     public void testSignInWorks() {
         solo.enterText(0, "wshi@uw.edu");
         solo.enterText(1, "password");

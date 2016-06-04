@@ -10,14 +10,14 @@
     tools:context="tcss450.uw.edu.mobileproject.authenticate.RegistrationActivity">
 
     <TextView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="70sp"
-        android:id="@+id/logo"
-        android:layout_marginTop="70dp"
         android:layout_marginBottom="40dp"
-        android:text="@string/app_name" />
+        android:layout_marginTop="70dp"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="70sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint"/>
+            android:textColorHint="@color/input_register_hint" />
 
         <!-- Password -->
         <EditText
@@ -53,7 +53,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint"/>
+            android:textColorHint="@color/input_register_hint" />
 
         <EditText
             android:id="@+id/reg_confirm_psw"
@@ -66,7 +66,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint"/>
+            android:textColorHint="@color/input_register_hint" />
 
         <!-- Register Button -->
         <Button
@@ -76,7 +76,7 @@
             android:layout_marginTop="20dip"
             android:background="#ea4c88"
             android:text="@string/register_text"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <!-- Link to Log in page -->
         <Button
@@ -88,8 +88,7 @@
             android:text="@string/link_to_login"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15dp"/>
-
+            android:textSize="15dp" />
 
 
     </LinearLayout>

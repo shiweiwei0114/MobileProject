@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -137,6 +136,7 @@ public class QuestionPostFragment extends Fragment {
 
     /**
      * Update the question.
+     *
      * @param quest the question be sent.
      */
     public void updateView(Question quest) {
@@ -152,6 +152,11 @@ public class QuestionPostFragment extends Fragment {
         }
     }
 
+    /**
+     * Download tags ans answers
+     *
+     * @param quest the question
+     */
     private void downloadTagsAndAns(Question quest) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -168,6 +173,9 @@ public class QuestionPostFragment extends Fragment {
         }
     }
 
+    /**
+     * Set tag view
+     */
     private void setTagsView() {
         if (mTagsContainer.getChildCount() == 0) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -187,35 +195,48 @@ public class QuestionPostFragment extends Fragment {
         }
     }
 
+    /**
+     * Set answer list.
+     */
     private void setAnsList() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        for (int i = 0; i < mAnswersList.size(); i++) {
-            // Display User TextView
-            TextView userTextView = new TextView(this.getActivity());
-            params.setMargins(10, 0, 0, 5);
-            userTextView.setLayoutParams(params);
-            setUserTextView(mAnswersList.get(i).getUser(), userTextView);
-            mAnsContainer.addView(userTextView);
 
-            // Display Answer TextView
-            TextView answerTextView = new TextView(this.getActivity());
-            params.setMargins(10, 0, 0, 0);
-            answerTextView.setLayoutParams(params);
-            answerTextView.setText(mAnswersList.get(i).getAnsDetail());
-            mAnsContainer.addView(answerTextView);
+        if (mAnsContainer.getChildCount() == 0) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
 
-            // Display DiffTime TextView
-            TextView timeTextView = new TextView(this.getActivity());
-            params.setMargins(10, 0, 0, 5);
-            timeTextView.setLayoutParams(params);
-            setDatePostTextView(mAnswersList.get(i).getAnsDatePost(), timeTextView);
-            mAnsContainer.addView(timeTextView);
+            for (int i = 0; i < mAnswersList.size(); i++) {
+                // Display User TextView
+                TextView userTextView = new TextView(this.getActivity());
+                params.setMargins(10, 0, 0, 5);
+                userTextView.setLayoutParams(params);
+                setUserTextView(mAnswersList.get(i).getUser(), userTextView);
+                mAnsContainer.addView(userTextView);
+
+                // Display Answer TextView
+                TextView answerTextView = new TextView(this.getActivity());
+                params.setMargins(10, 0, 0, 0);
+                answerTextView.setLayoutParams(params);
+                answerTextView.setText(mAnswersList.get(i).getAnsDetail());
+                mAnsContainer.addView(answerTextView);
+
+                // Display DiffTime TextView
+                TextView timeTextView = new TextView(this.getActivity());
+                params.setMargins(10, 0, 0, 5);
+                timeTextView.setLayoutParams(params);
+                setDatePostTextView(mAnswersList.get(i).getAnsDatePost(), timeTextView);
+                mAnsContainer.addView(timeTextView);
+            }
         }
     }
 
+    /**
+     * Set User text view.
+     *
+     * @param user     the user
+     * @param textView the textview
+     */
     private void setUserTextView(String user, TextView textView) {
         String[] userDisplay = user.split("@");
         textView.setTypeface(Typeface.DEFAULT_BOLD);
@@ -224,6 +245,12 @@ public class QuestionPostFragment extends Fragment {
                 getResources().getDimensionPixelSize(R.dimen.text_size));
     }
 
+    /**
+     * Set the date post text view.
+     *
+     * @param time     the time th question was posted.
+     * @param textView the textview
+     */
     private void setDatePostTextView(String time, TextView textView) {
         Calendar now = Calendar.getInstance();
         Timestamp timePost = Timestamp.valueOf(time);
@@ -307,7 +334,7 @@ public class QuestionPostFragment extends Fragment {
                  */
                 @Override
                 public void onClick(View v) {
-                    Log.d("TAG","whatever");
+                    Log.d("TAG", "whatever");
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this cool interview question from Proterview!" + '\n'
@@ -347,11 +374,19 @@ public class QuestionPostFragment extends Fragment {
 //        mListener = null;
     }
 
+    /**
+     * On pause.
+     */
     @Override
     public void onPause() {
         super.onPause();
     }
 
+    /**
+     * Build  Answer URL.
+     *
+     * @return the status
+     */
     private String buildAnswerURL() {
         StringBuilder sb = new StringBuilder(ADD_ANS_URL);
         try {
@@ -375,56 +410,16 @@ public class QuestionPostFragment extends Fragment {
         return sb.toString();
     }
 
-    private void addRecentAnswer() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-            // Display User TextView
-        TextView userTextView = new TextView(this.getActivity());
-        params.setMargins(10, 0, 0, 5);
-        userTextView.setLayoutParams(params);
-        setUserTextView(mUserEmail, userTextView);
-        mAnsContainer.addView(userTextView);
-
-        // Display Answer TextView
-        TextView answerTextView = new TextView(this.getActivity());
-        params.setMargins(10, 0, 0, 0);
-        answerTextView.setLayoutParams(params);
-        answerTextView.setText(mAnsEditText.getText().toString());
-        mAnsContainer.addView(answerTextView);
-
-        // Display DiffTime TextView
-        TextView timeTextView = new TextView(this.getActivity());
-        params.setMargins(10, 0, 0, 5);
-        timeTextView.setLayoutParams(params);
-        timeTextView.setText("Just now");
-        timeTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,
-                getResources().getDimensionPixelSize(R.dimen.text_time_size));
-        mAnsContainer.addView(timeTextView);
-    }
-
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Download Tags from the server.
      */
-//    public interface OnFragmentInteractionListener {
-//        void onFragmentInteraction(Uri uri);
-//    }
-
     private class DownloadTagsTask extends AsyncTask<String, Void, String> {
 
         /**
          * Override this method to perform a computation on a background thread. The
          * specified parameters are the parameters passed to {@link #execute}
          * by the caller of this task.
-         * <p>
+         * <p/>
          * This method can call {@link #publishProgress} to publish updates
          * on the UI thread.
          *
@@ -488,13 +483,16 @@ public class QuestionPostFragment extends Fragment {
         }
     }
 
+    /**
+     * Download Answers from server.
+     */
     private class DownloadAnswersTask extends AsyncTask<String, Void, String> {
 
         /**
          * Override this method to perform a computation on a background thread. The
          * specified parameters are the parameters passed to {@link #execute}
          * by the caller of this task.
-         * <p>
+         * <p/>
          * This method can call {@link #publishProgress} to publish updates
          * on the UI thread.
          *
@@ -527,6 +525,13 @@ public class QuestionPostFragment extends Fragment {
             return response;
         }
 
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result display the result.
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -551,13 +556,16 @@ public class QuestionPostFragment extends Fragment {
         }
     }
 
+    /**
+     * Add answer task
+     */
     private class AddAnswerTask extends AsyncTask<String, Void, String> {
 
         /**
          * Override this method to perform a computation on a background thread. The
          * specified parameters are the parameters passed to {@link #execute}
          * by the caller of this task.
-         * <p>
+         * <p/>
          * This method can call {@link #publishProgress} to publish updates
          * on the UI thread.
          *
@@ -607,7 +615,10 @@ public class QuestionPostFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    addRecentAnswer();
+                    mAnsContainer.removeAllViews();
+                    String ansUrl = ANS_URL + "&questID=" + mQuestID;
+                    DownloadAnswersTask task = new DownloadAnswersTask();
+                    task.execute(ansUrl);
                     mAnsEditText.setText(null);
                     Toast.makeText(getContext(), "Answer successfully added!",
                             Toast.LENGTH_LONG).show();

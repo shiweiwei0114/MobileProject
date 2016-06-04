@@ -13,8 +13,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -62,6 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     /**
      * Called when the activity is starting.
+     *
      * @param savedInstanceState contains the data it most recently supplied.
      */
     @Override
@@ -294,7 +292,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             .show();
                     SharedPreferences sharedPreferences =
                             getSharedPreferences(getString(R.string.LOGIN_PREFS),
-                            Context.MODE_PRIVATE);
+                                    Context.MODE_PRIVATE);
                     String user = mEmailText.getText().toString();
                     sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), true).apply();
                     sharedPreferences.edit().putString(getString(R.string.USER), user).apply();

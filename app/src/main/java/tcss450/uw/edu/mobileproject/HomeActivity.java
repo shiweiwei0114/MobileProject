@@ -1,7 +1,7 @@
 /*
  * TCSS 450 - Mobile App Programming
  * @author Weiwei Shi, Kyle Doan
- * @version 1.0
+ * @version 1.1
  */
 
 package tcss450.uw.edu.mobileproject;
@@ -18,7 +18,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -69,8 +68,6 @@ public class HomeActivity extends AppCompatActivity implements
     private ListView mDrawerList;
     private QuestionsListFragment mQuestListFragment;
 
-    private ShareActionProvider mShareActionProvider;
-
     /**
      * Called when the activity is starting.
      *
@@ -83,8 +80,10 @@ public class HomeActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         mTags = new ArrayList<>();
         mTags.add(getResources().getString(R.string.tag_all));
+
         // download Tags list
         DownloadTagsTask tagsTask = new DownloadTagsTask();
         tagsTask.execute(TAGS_URL);
@@ -135,6 +134,9 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Called the add question fragment.
+     */
     private void callAddQuestionFragment() {
         QuestionAddFragment questionAddFragment = new QuestionAddFragment();
         Bundle args = new Bundle();
@@ -147,6 +149,9 @@ public class HomeActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * close the DB.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -195,19 +200,6 @@ public class HomeActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.menu_item_share) {
-//            //mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-//            //SharedPreferences questionPrefs = getPreferences(QuestionPostFragment.QUEST_SELECTED, 0);
-//            Log.d("TAG","whatever");
-//            Intent sendIntent = new Intent();
-//            sendIntent.setAction(Intent.ACTION_SEND);
-//            sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this interview question!" + "question");
-//            sendIntent.setType("text/plain");
-//            startActivity(Intent.createChooser(sendIntent, "Share via"));
-//           // startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-//            return true;
-//        }
 
         if (id == R.id.action_logout) {
             SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
@@ -236,9 +228,6 @@ public class HomeActivity extends AppCompatActivity implements
         int id = item.getItemId();
         if (id == R.id.nav_add) {
             callAddQuestionFragment();
-//            QuestionAddFragment questionAddFragment = new QuestionAddFragment();
-//            FragmentManager manager = getSupportFragmentManager();
-//            manager.beginTransaction().replace(R.id.fragment_container,questionAddFragment).addToBackStack(null).commit();
         } else if (id == R.id.nav_aboutUs) {
             AboutUsFragment aboutUsFragment = new AboutUsFragment();
             FragmentManager manager = getSupportFragmentManager();
@@ -278,7 +267,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     /**
-     * Add queston task.
+     * Add question task.
      *
      * @param url the url received.
      */
@@ -365,14 +354,18 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Download the tags from the server to save in the local device.
+     */
     private class DownloadTagsTask extends AsyncTask<String, Void, String> {
 
         private ProjectDB mDB;
+
         /**
          * Override this method to perform a computation on a background thread. The
          * specified parameters are the parameters passed to {@link #execute}
          * by the caller of this task.
-         * <p>
+         * <p/>
          * This method can call {@link #publishProgress} to publish updates
          * on the UI thread.
          *
@@ -438,6 +431,12 @@ public class HomeActivity extends AppCompatActivity implements
             Log.i(LOG, "Size of tag list " + mTags.size());
         }
 
+        /**
+         * Save the data to local DB.
+         *
+         * @param tagJSON the tagJson
+         * @return the status.
+         */
         private String saveToDB(String tagJSON) {
             if (mDB == null) {
                 mDB = new ProjectDB(HomeActivity.this);
@@ -466,6 +465,9 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Click listener for the drawer navigation items.
+     */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         /**
          * Callback method to be invoked when an item in this AdapterView has
@@ -487,6 +489,11 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Select the tags.
+     *
+     * @param position the index of the item in the list
+     */
     private void selectTag(int position) {
         String tagFilter = mTags.get(position);
         Log.i(LOG, "Tag Selected is " + tagFilter);

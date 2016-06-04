@@ -7,7 +7,6 @@
 package tcss450.uw.edu.mobileproject;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,6 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
      * List of questions.
      */
     private final List<Question> mValues;
-    // mValues display all the list
-    // TODO have another alter list to display some specific list.
     /**
      * Listener for callback.
      */
@@ -84,6 +81,12 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
         });
     }
 
+    /**
+     * Set the time of when th question was posted.
+     *
+     * @param time     the time the user enter the question
+     * @param textView display how long ago the question was posted.
+     */
     private void setDatePostTextView(String time, TextView textView) {
         Calendar now = Calendar.getInstance();
         Timestamp timePost = Timestamp.valueOf(time);
@@ -104,8 +107,6 @@ public class MyQuestionsListRecyclerViewAdapter extends RecyclerView.Adapter<MyQ
             timeDisplay = String.valueOf(timeDif) + " days ago";
         }
         textView.setText(timeDisplay);
-//        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, // DIP : Device Indepentdent pixel
-//                getResources().getDimensionPixelSize(R.dimen.text_time_size));
     }
 
     /**
